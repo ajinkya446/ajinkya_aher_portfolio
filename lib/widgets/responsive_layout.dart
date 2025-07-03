@@ -1,3 +1,4 @@
+import 'package:ajinkya_aher_portfolio/widgets/service_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,12 +29,8 @@ class DesktopView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-
-    // Responsive font scaling factor
     double scale = screenWidth / 1400;
-    scale = scale.clamp(0.8, 1.2); // reasonable scaling limits
-
-    // Responsive avatar radius
+    scale = scale.clamp(0.8, 1.2);
     double avatarRadius = (screenWidth / 8).clamp(100, 180);
 
     return Scaffold(
@@ -44,7 +41,6 @@ class DesktopView extends StatelessWidget {
         title: LayoutBuilder(
           builder: (context, constraints) {
             if (constraints.maxWidth > 800) {
-              // Desktop view
               return Row(
                 children: [
                   Text(
@@ -63,17 +59,12 @@ class DesktopView extends StatelessWidget {
                     onPressed: () {},
                     child: Text(
                       'Hire Me',
-                      style: GoogleFonts.montserrat(
-                        fontSize: 16,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: GoogleFonts.montserrat(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w400),
                     ),
                   ),
                 ],
               );
             } else {
-              // Mobile view
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -83,9 +74,7 @@ class DesktopView extends StatelessWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.menu, color: Colors.white),
-                    onPressed: () {
-                      // You can show Drawer or BottomSheet for nav
-                    },
+                    onPressed: () {},
                   )
                 ],
               );
@@ -93,32 +82,57 @@ class DesktopView extends StatelessWidget {
           },
         ),
       ),
-      body: Center(
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 1400),
-          padding: const EdgeInsets.all(40),
-          child: Center(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final isNarrow = constraints.maxWidth < 900;
-                if (isNarrow) {
-                  return SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [_buildLeft(scale, isCentered: true), const SizedBox(height: 40), _buildRight(avatarRadius)],
-                    ),
-                  );
-                } else {
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [Expanded(child: _buildLeft(scale)), const SizedBox(width: 40), Expanded(child: _buildRight(avatarRadius))],
-                  );
-                }
-              },
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 1400,
+                  // very important: let it grow vertically as much as it wants
+                  minHeight: constraints.maxHeight,
+                ),
+                child: IntrinsicHeight(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(40),
+                        child: LayoutBuilder(
+                          builder: (context, innerConstraints) {
+                            final isNarrow = innerConstraints.maxWidth < 900;
+                            if (isNarrow) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  _buildLeft(scale, isCentered: true),
+                                  const SizedBox(height: 40),
+                                  _buildRight(avatarRadius),
+                                ],
+                              );
+                            } else {
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(child: _buildLeft(scale)),
+                                  const SizedBox(width: 40),
+                                  Expanded(child: _buildRight(avatarRadius)),
+                                ],
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 120),
+                      const ServicesSection(),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -190,8 +204,8 @@ class DesktopView extends StatelessWidget {
           runSpacing: 20,
           children: const [
             InfoCard(label: '5+', description: 'Experiences'),
-            InfoCard(label: '20+', description: 'Project done'),
-            InfoCard(label: '80+', description: 'Happy Clients'),
+            InfoCard(label: '10+', description: 'Project done'),
+            InfoCard(label: '5+', description: 'Happy Clients'),
           ],
         ),
       ],
@@ -268,18 +282,11 @@ class MobileView extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'AA',
-          style: GoogleFonts.k2d(
-            fontSize: 32 * scale,
-            color: const Color(0xffE60026),
-            fontWeight: FontWeight.bold,
-          ),
+          style: GoogleFonts.k2d(fontSize: 32 * scale, color: const Color(0xffE60026), fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.black,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.menu),
-          ),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
         ],
       ),
       body: SingleChildScrollView(
@@ -292,22 +299,14 @@ class MobileView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Avatar
                   CircleAvatar(
                     radius: 100,
                     backgroundColor: Colors.grey.shade900,
                     child: ClipOval(
-                      child: Image.asset(
-                        'assets/profile.png',
-                        width: 180,
-                        height: 180,
-                        fit: BoxFit.cover,
-                      ),
+                      child: Image.asset('assets/profile.png', width: 180, height: 180, fit: BoxFit.cover),
                     ),
                   ),
                   const SizedBox(height: 24),
-
-                  // Intro text
                   Text('Hi I am', style: GoogleFonts.montserrat(fontSize: 16 * scale, color: Colors.grey.shade400), textAlign: TextAlign.center),
                   const SizedBox(height: 8),
                   Text('Ajinkya Aher', style: GoogleFonts.montserrat(fontSize: 28 * scale, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.center),
@@ -343,10 +342,7 @@ class MobileView extends StatelessWidget {
                       ),
                       const SizedBox(width: 16),
                       OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: Colors.grey.shade400),
-                          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
-                        ),
+                        style: OutlinedButton.styleFrom(side: BorderSide(color: Colors.grey.shade400), padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12)),
                         onPressed: () {},
                         child: Text(
                           'Download CV',
