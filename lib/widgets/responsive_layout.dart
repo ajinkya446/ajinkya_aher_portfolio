@@ -28,7 +28,20 @@ class ResponsiveLayout extends StatelessWidget {
 }
 
 class DesktopView extends StatelessWidget {
-  const DesktopView({super.key});
+  DesktopView({super.key}); // Removed 'const' because of keys
+
+  final GlobalKey homeKey = GlobalKey();
+  final GlobalKey servicesKey = GlobalKey();
+  final GlobalKey aboutKey = GlobalKey();
+  final GlobalKey contactKey = GlobalKey();
+
+  void _scrollToSection(GlobalKey key) {
+    Scrollable.ensureVisible(
+      key.currentContext!,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +65,22 @@ class DesktopView extends StatelessWidget {
                     style: GoogleFonts.k2d(fontSize: 32, color: const Color(0xffE60026), fontWeight: FontWeight.bold),
                   ),
                   const Spacer(),
-                  NavBarItem(title: 'Home'),
-                  NavBarItem(title: 'Services'),
-                  NavBarItem(title: 'About me'),
-                  NavBarItem(title: 'Contact me'),
+                  NavBarItem(
+                    title: 'Home',
+                    onTap: () => _scrollToSection(homeKey),
+                  ),
+                  NavBarItem(
+                    title: 'Services',
+                    onTap: () => _scrollToSection(servicesKey),
+                  ),
+                  NavBarItem(
+                    title: 'About me',
+                    onTap: () => _scrollToSection(aboutKey),
+                  ),
+                  NavBarItem(
+                    title: 'Contact me',
+                    onTap: () => _scrollToSection(contactKey),
+                  ),
                   const SizedBox(width: 12),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
@@ -91,11 +116,12 @@ class DesktopView extends StatelessWidget {
             child: Align(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 1400),
+                constraints: const BoxConstraints(maxWidth: 1400),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Padding(
+                    Container(
+                      key: homeKey,
                       padding: const EdgeInsets.all(40),
                       child: LayoutBuilder(
                         builder: (context, innerConstraints) {
@@ -115,9 +141,23 @@ class DesktopView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 120),
-                    const ServicesSection(),
+                    Container(
+                      key: servicesKey,
+                      child: const ServicesSection(),
+                    ),
                     const SizedBox(height: 120),
-                    AboutMeSection()
+                    Container(
+                      key: aboutKey,
+                      child: AboutMeSection(),
+                    ),
+                    const SizedBox(height: 120),
+                    Container(
+                      key: contactKey,
+                      padding: const EdgeInsets.symmetric(vertical: 40),
+                      child: const Center(
+                        child: Text('Contact Me Section', style: TextStyle(fontSize: 24, color: Colors.white)),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -127,7 +167,6 @@ class DesktopView extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildLeft(double scale, {bool isCentered = false}) {
     return Column(
       crossAxisAlignment: isCentered ? CrossAxisAlignment.center : CrossAxisAlignment.start,
@@ -220,18 +259,21 @@ class DesktopView extends StatelessWidget {
 
 class NavBarItem extends StatelessWidget {
   final String title;
+  final VoidCallback? onTap;
 
-  const NavBarItem({super.key, required this.title});
+  const NavBarItem({super.key, required this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 12.0),
-      child: TextButton(onPressed: () {}, child: Text(title, style: GoogleFonts.montserrat(fontSize: 18, color: Colors.white))),
+    return TextButton(
+      onPressed: onTap,
+      child: Text(
+        title,
+        style: GoogleFonts.montserrat(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
+      ),
     );
   }
 }
-
 class InfoCard extends StatelessWidget {
   final String label;
   final String description;

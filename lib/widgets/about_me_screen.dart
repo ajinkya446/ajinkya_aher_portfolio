@@ -54,7 +54,7 @@ class AboutMeSection extends StatelessWidget {
           "\nSpecializing in state management solutions such as BLoC, GetX, and Provider. I have a proven track record in integrating RESTful APIs, automating CI/CD pipelines using GitLab CI/CD and GitHub Actions, and ensuring full compliance with App Store and Play Store guidelines."
           "\nI have successfully contributed to a range of projects, including high-impact government and enterprise applications, while also developing reusable custom Flutter libraries and packages. I am committed to writing clean, maintainable code, driving performance improvements, and collaborating effectively within Agile teams.",
           textAlign: TextAlign.start,
-          style: GoogleFonts.montserrat(fontSize: 16, color: Colors.grey.shade400),
+          style: GoogleFonts.montserrat(fontSize: 14, color: Colors.grey.shade400),
         ),
         const SizedBox(height: 40),
         ElevatedButton(
