@@ -13,10 +13,10 @@ class ResponsiveLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth >= 600) {
-          return desktop;
+        if (constraints.maxWidth > 800) {
+          return DesktopView();
         } else {
-          return mobile;
+          return MobileView();
         }
       },
     );
@@ -88,46 +88,32 @@ class DesktopView extends StatelessWidget {
             child: Align(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: 1400,
-                  // very important: let it grow vertically as much as it wants
-                  minHeight: constraints.maxHeight,
-                ),
-                child: IntrinsicHeight(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(40),
-                        child: LayoutBuilder(
-                          builder: (context, innerConstraints) {
-                            final isNarrow = innerConstraints.maxWidth < 900;
-                            if (isNarrow) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  _buildLeft(scale, isCentered: true),
-                                  const SizedBox(height: 40),
-                                  _buildRight(avatarRadius),
-                                ],
-                              );
-                            } else {
-                              return Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(child: _buildLeft(scale)),
-                                  const SizedBox(width: 40),
-                                  Expanded(child: _buildRight(avatarRadius)),
-                                ],
-                              );
-                            }
-                          },
-                        ),
+                constraints: BoxConstraints(maxWidth: 1400),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(40),
+                      child: LayoutBuilder(
+                        builder: (context, innerConstraints) {
+                          final isNarrow = innerConstraints.maxWidth < 900;
+                          if (isNarrow) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [_buildLeft(scale, isCentered: true), const SizedBox(height: 40), _buildRight(avatarRadius)],
+                            );
+                          } else {
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [Expanded(child: _buildLeft(scale)), const SizedBox(width: 40), Expanded(child: _buildRight(avatarRadius))],
+                            );
+                          }
+                        },
                       ),
-                      const SizedBox(height: 120),
-                      const ServicesSection(),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 120),
+                    const ServicesSection(),
+                  ],
                 ),
               ),
             ),
@@ -185,10 +171,7 @@ class DesktopView extends StatelessWidget {
               ),
             ),
             OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(color: Colors.grey.shade400),
-                padding: EdgeInsets.symmetric(horizontal: 24 * scale, vertical: 12 * scale),
-              ),
+              style: OutlinedButton.styleFrom(side: BorderSide(color: Colors.grey.shade400), padding: EdgeInsets.symmetric(horizontal: 24 * scale, vertical: 12 * scale)),
               onPressed: () {},
               child: Text(
                 'Download CV',
@@ -202,11 +185,7 @@ class DesktopView extends StatelessWidget {
           alignment: isCentered ? WrapAlignment.center : WrapAlignment.start,
           spacing: 20,
           runSpacing: 20,
-          children: const [
-            InfoCard(label: '5+', description: 'Experiences'),
-            InfoCard(label: '10+', description: 'Project done'),
-            InfoCard(label: '5+', description: 'Happy Clients'),
-          ],
+          children: const [InfoCard(label: '5+', description: 'Experiences'), InfoCard(label: '10+', description: 'Project done'), InfoCard(label: '5+', description: 'Happy Clients')],
         ),
       ],
     );
@@ -235,10 +214,7 @@ class NavBarItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 12.0),
-      child: TextButton(
-        onPressed: () {},
-        child: Text(title, style: GoogleFonts.montserrat(fontSize: 18, color: Colors.white)),
-      ),
+      child: TextButton(onPressed: () {}, child: Text(title, style: GoogleFonts.montserrat(fontSize: 18, color: Colors.white))),
     );
   }
 }
@@ -251,17 +227,20 @@ class InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scale = MediaQuery.of(context).textScaleFactor;
+
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Colors.grey.shade900, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(color: Colors.grey.shade900, borderRadius: BorderRadius.circular(12)),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             label,
-            style: GoogleFonts.montserrat(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.orange),
+            style: GoogleFonts.montserrat(fontSize: 24 * scale, fontWeight: FontWeight.bold, color: Colors.orange),
           ),
-          const SizedBox(height: 4),
-          Text(description, style: GoogleFonts.montserrat(fontSize: 14, color: Colors.white, fontWeight: FontWeight.w400))
+          const SizedBox(height: 8),
+          Text(description, style: GoogleFonts.montserrat(fontSize: 14 * scale, color: Colors.grey.shade300)),
         ],
       ),
     );
@@ -280,6 +259,7 @@ class MobileView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        centerTitle: false,
         title: Text(
           'AA',
           style: GoogleFonts.k2d(fontSize: 32 * scale, color: const Color(0xffE60026), fontWeight: FontWeight.bold),
@@ -290,7 +270,8 @@ class MobileView extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        child: Center(
+        child: Align(
+          alignment: Alignment.topCenter,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: maxContentWidth),
             child: Padding(
@@ -307,9 +288,17 @@ class MobileView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  Text('Hi I am', style: GoogleFonts.montserrat(fontSize: 16 * scale, color: Colors.grey.shade400), textAlign: TextAlign.center),
+                  Text(
+                    'Hi I am',
+                    style: GoogleFonts.montserrat(fontSize: 16 * scale, color: Colors.grey.shade400),
+                    textAlign: TextAlign.center,
+                  ),
                   const SizedBox(height: 8),
-                  Text('Ajinkya Aher', style: GoogleFonts.montserrat(fontSize: 28 * scale, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.center),
+                  Text(
+                    'Ajinkya Aher',
+                    style: GoogleFonts.montserrat(fontSize: 28 * scale, fontWeight: FontWeight.bold, color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
                   const SizedBox(height: 12),
                   Text(
                     'Flutter (Android/iOS) App Developer',
@@ -358,6 +347,8 @@ class MobileView extends StatelessWidget {
                     alignment: WrapAlignment.center,
                     children: const [InfoCard(label: '5+', description: 'Experiences'), InfoCard(label: '20+', description: 'Project done'), InfoCard(label: '80+', description: 'Happy Clients')],
                   ),
+                  const SizedBox(height: 120),
+                  const ServicesSection(),
                 ],
               ),
             ),

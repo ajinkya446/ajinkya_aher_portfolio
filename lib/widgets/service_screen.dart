@@ -4,48 +4,71 @@ import 'package:google_fonts/google_fonts.dart';
 class ServicesSection extends StatelessWidget {
   const ServicesSection({super.key});
 
+  static const double desktopMaxWidth = 1200;
+  static const double horizontalPadding = 16;
+
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Container(
       color: Colors.black,
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 60),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text('Services', style: GoogleFonts.montserrat(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white), textAlign: TextAlign.center),
+          Text(
+            'Services',
+            style: GoogleFonts.montserrat(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 12),
-          Text('Lorem ipsum dolor sit amet consectetur. Imperdiet convallis blandit felis ligula aliquam',
-              style: GoogleFonts.montserrat(fontSize: 16, color: Colors.grey.shade400), textAlign: TextAlign.center),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
+            child: Text(
+              'Lorem ipsum dolor sit amet consectetur. Imperdiet convallis blandit felis ligula aliquam',
+              style: GoogleFonts.montserrat(fontSize: 16, color: Colors.grey.shade400),
+              textAlign: TextAlign.center,
+            ),
+          ),
           const SizedBox(height: 40),
           Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1200),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final width = constraints.maxWidth;
-                  int crossAxisCount;
-                  double aspectRatio;
+              constraints: const BoxConstraints(maxWidth: desktopMaxWidth),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final containerWidth = constraints.maxWidth;
+                    int crossAxisCount;
+                    double aspectRatio;
 
-                  if (width >= 1000) {
-                    crossAxisCount = 3;
-                    aspectRatio = 8 / 4.5;
-                  } else if (width >= 600) {
-                    crossAxisCount = 2;
-                    aspectRatio = 6 / 3.2;
-                  } else {
-                    crossAxisCount = 1;
-                    aspectRatio = 1.5;
-                  }
+                    if (containerWidth >= 1000) {
+                      crossAxisCount = 3;
+                      aspectRatio = 8 / 4.5;
+                    } else if (containerWidth >= 600) {
+                      crossAxisCount = 2;
+                      aspectRatio = 6 / 3.2;
+                    } else {
+                      crossAxisCount = 1;
+                      aspectRatio = 1.5;
+                    }
 
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 6,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: crossAxisCount, crossAxisSpacing: 20, mainAxisSpacing: 20, childAspectRatio: aspectRatio),
-                    itemBuilder: (context, index) => const ServiceCard(),
-                  );
-                },
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 6,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 20,
+                        childAspectRatio: aspectRatio,
+                      ),
+                      itemBuilder: (context, index) => const ServiceCard(),
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -81,27 +104,52 @@ class _ServiceCardState extends State<ServiceCard> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    final scale = MediaQuery.of(context).textScaleFactor;
+
     return Container(
-      decoration: BoxDecoration(color: Colors.grey.shade900, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.orange, width: 1)),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade900,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.orange, width: 1),
+      ),
       padding: const EdgeInsets.all(16),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.design_services, size: 48, color: Colors.orange),
-            const SizedBox(height: 16),
-            Text('Service Title', style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
-            const SizedBox(height: 8),
-            Text('This is a short description of the service offered.', style: GoogleFonts.montserrat(fontSize: 14, color: Colors.grey.shade300)),
-            const SizedBox(height: 12),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: SlideTransition(position: _offsetAnimation, child: Icon(Icons.arrow_right_alt, color: Colors.orange, size: 32)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.design_services, size: 48, color: Colors.orange),
+          const SizedBox(height: 12),
+          Text(
+            'Service Title',
+            style: GoogleFonts.montserrat(
+              fontSize: 20 * scale,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
-          ],
-        ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: Text(
+              'This is a short description of the service offered.',
+              style: GoogleFonts.montserrat(
+                fontSize: 14 * scale,
+                color: Colors.grey.shade300,
+              ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: SlideTransition(
+              position: _offsetAnimation,
+              child: Icon(Icons.arrow_right_alt, color: Colors.orange, size: 32),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
+
