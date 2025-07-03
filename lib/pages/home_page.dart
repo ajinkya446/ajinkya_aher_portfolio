@@ -1,5 +1,7 @@
-import 'package:ajinkya_aher_portfolio/widgets/responsive_layout.dart';
+import 'package:ajinkya_aher_portfolio/pages/responsive_layout.dart';
 import 'package:flutter/material.dart';
+
+import 'desktop_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

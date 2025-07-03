@@ -1,4 +1,4 @@
-import 'package:ajinkya_aher_portfolio/widgets/home_page.dart';
+import 'package:ajinkya_aher_portfolio/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
