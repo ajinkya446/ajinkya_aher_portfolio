@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../pages/service_screen.dart';
 import '../widgets/info_card.dart';
 import 'about_me_screen.dart';
+import 'contact_me_section.dart';
+import 'desktop_view.dart';
 
 class MobileView extends StatefulWidget {
   const MobileView({super.key});
@@ -22,13 +24,6 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
   late AnimationController _drawerController;
   late Animation<Offset> _drawerAnimation;
   final ScrollController _scrollController = ScrollController();
-
-  // Section Keys
-  final GlobalKey _homeKey = GlobalKey();
-  final GlobalKey _aboutKey = GlobalKey();
-  final GlobalKey _servicesKey = GlobalKey();
-  final GlobalKey _projectKey = GlobalKey();
-  final GlobalKey _contactKey = GlobalKey();
 
   @override
   void initState() {
@@ -95,7 +90,7 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(key: _homeKey),
+                      Container(key: homeKey),
                       CircleAvatar(
                         radius: 100,
                         backgroundColor: Colors.grey.shade900,
@@ -180,14 +175,17 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
                         children: const [InfoCard(label: '5+', description: 'Experiences'), InfoCard(label: '10+', description: 'Project done'), InfoCard(label: '5+', description: 'Happy Clients')],
                       ),
                       const SizedBox(height: 120),
-                      Container(key: _servicesKey, child: const ServicesSection()),
+                      Container(key: servicesKey, child: const ServicesSection()),
                       const SizedBox(height: 120),
-                      Container(key: _projectKey, child: const ProjectSection()),
+                      Container(key: projectKey, child: const ProjectSection()),
                       const SizedBox(height: 120),
-                      Container(key: _aboutKey, child: const AboutMeSection()),
+                      Container(key: aboutKey, child: const AboutMeSection()),
                       const SizedBox(height: 120),
-                      Container(key: _contactKey, child: Text("Contact Section", style: TextStyle(color: Colors.white))),
-                    ],
+                      Container(
+                        key: contactKey,
+                        padding: const EdgeInsets.symmetric(vertical: 40),
+                        child: const ContactPage(),
+                      ),],
                   ),
                 ),
               ),
@@ -207,11 +205,11 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    drawerItem(FontAwesomeIcons.house, 'Home', scale, () => scrollToSection(_homeKey)),
-                    drawerItem(FontAwesomeIcons.user, 'About', scale, () => scrollToSection(_aboutKey)),
-                    drawerItem(FontAwesomeIcons.gears, 'Services', scale, () => scrollToSection(_servicesKey)),
-                    drawerItem(FontAwesomeIcons.folderOpen, 'Projects', scale, () => scrollToSection(_projectKey)),
-                    drawerItem(FontAwesomeIcons.phone, 'Contact', scale, () => scrollToSection(_contactKey)),
+                    drawerItem(FontAwesomeIcons.house, 'Home', scale, () => scrollToSection(homeKey)),
+                    drawerItem(FontAwesomeIcons.user, 'About', scale, () => scrollToSection(aboutKey)),
+                    drawerItem(FontAwesomeIcons.gears, 'Services', scale, () => scrollToSection(servicesKey)),
+                    drawerItem(FontAwesomeIcons.folderOpen, 'Projects', scale, () => scrollToSection(projectKey)),
+                    drawerItem(FontAwesomeIcons.phone, 'Contact', scale, () => scrollToSection(contactKey)),
                     const Spacer(),
                   ],
                 ),
