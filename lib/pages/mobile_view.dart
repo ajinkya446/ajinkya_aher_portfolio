@@ -1,5 +1,6 @@
 import 'dart:html' as html;
 
+import 'package:ajinkya_aher_portfolio/pages/project_section.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,7 +27,7 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
   final GlobalKey _homeKey = GlobalKey();
   final GlobalKey _aboutKey = GlobalKey();
   final GlobalKey _servicesKey = GlobalKey();
-  final GlobalKey _projectsKey = GlobalKey();
+  final GlobalKey _projectKey = GlobalKey();
   final GlobalKey _contactKey = GlobalKey();
 
   @override
@@ -47,11 +48,7 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
   void scrollToSection(GlobalKey key) {
     final context = key.currentContext;
     if (context != null) {
-      Scrollable.ensureVisible(
-        context,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-      );
+      Scrollable.ensureVisible(context, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
     }
     toggleDrawer();
   }
@@ -185,9 +182,9 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
                       const SizedBox(height: 120),
                       Container(key: _servicesKey, child: const ServicesSection()),
                       const SizedBox(height: 120),
-                      Container(key: _aboutKey, child: const AboutMeSection()),
+                      Container(key: _projectKey, child: const ProjectSection()),
                       const SizedBox(height: 120),
-                      Container(key: _projectsKey, child: Text("Projects Section", style: TextStyle(color: Colors.white))),
+                      Container(key: _aboutKey, child: const AboutMeSection()),
                       const SizedBox(height: 120),
                       Container(key: _contactKey, child: Text("Contact Section", style: TextStyle(color: Colors.white))),
                     ],
@@ -213,7 +210,7 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
                     drawerItem(FontAwesomeIcons.house, 'Home', scale, () => scrollToSection(_homeKey)),
                     drawerItem(FontAwesomeIcons.user, 'About', scale, () => scrollToSection(_aboutKey)),
                     drawerItem(FontAwesomeIcons.gears, 'Services', scale, () => scrollToSection(_servicesKey)),
-                    drawerItem(FontAwesomeIcons.folderOpen, 'Projects', scale, () => scrollToSection(_projectsKey)),
+                    drawerItem(FontAwesomeIcons.folderOpen, 'Projects', scale, () => scrollToSection(_projectKey)),
                     drawerItem(FontAwesomeIcons.phone, 'Contact', scale, () => scrollToSection(_contactKey)),
                     const Spacer(),
                   ],

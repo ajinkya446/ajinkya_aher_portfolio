@@ -1,5 +1,6 @@
 import 'dart:html' as html;
 
+import 'package:ajinkya_aher_portfolio/pages/project_section.dart';
 import 'package:ajinkya_aher_portfolio/pages/service_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,6 +15,7 @@ class DesktopView extends StatelessWidget {
 
   final GlobalKey homeKey = GlobalKey();
   final GlobalKey servicesKey = GlobalKey();
+  final GlobalKey projectKey = GlobalKey();
   final GlobalKey aboutKey = GlobalKey();
   final GlobalKey contactKey = GlobalKey();
 
@@ -49,8 +51,8 @@ class DesktopView extends StatelessWidget {
                   const Spacer(),
                   NavBarItem(title: 'Home', onTap: () => _scrollToSection(homeKey)),
                   NavBarItem(title: 'Services', onTap: () => _scrollToSection(servicesKey)),
-                  NavBarItem(title: 'Services', onTap: () => _scrollToSection(servicesKey)),
-                  NavBarItem(title: 'Projects', onTap: () => _scrollToSection(aboutKey)),
+                  NavBarItem(title: 'Projects', onTap: () => _scrollToSection(projectKey)),
+                  NavBarItem(title: 'About me', onTap: () => _scrollToSection(aboutKey)),
                   NavBarItem(title: 'Contact me', onTap: () => _scrollToSection(contactKey)),
                   const SizedBox(width: 12),
                   ElevatedButton(
@@ -114,15 +116,11 @@ class DesktopView extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 120),
-                    Container(
-                      key: servicesKey,
-                      child: const ServicesSection(),
-                    ),
+                    Container(key: servicesKey, child: const ServicesSection()),
                     const SizedBox(height: 120),
-                    Container(
-                      key: aboutKey,
-                      child: AboutMeSection(),
-                    ),
+                    Container(key: projectKey, child: const ProjectSection()),
+                    const SizedBox(height: 120),
+                    Container(key: aboutKey, child: AboutMeSection()),
                     const SizedBox(height: 120),
                     Container(
                       key: contactKey,
