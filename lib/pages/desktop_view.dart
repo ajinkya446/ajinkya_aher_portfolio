@@ -55,7 +55,9 @@ class DesktopView extends StatelessWidget {
                   const SizedBox(width: 12),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-                    onPressed: () {},
+                    onPressed: () {
+                      html.window.open('mailto:ajinkya446@gmail.com?subject=Hire%20Request&body=Hello%20Ajinkya,', '_self');
+                    },
                     child: Text(
                       'Hire Me',
                       style: GoogleFonts.montserrat(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
@@ -196,7 +198,9 @@ class DesktopView extends StatelessWidget {
           children: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.orange, padding: EdgeInsets.symmetric(horizontal: 24 * scale, vertical: 12 * scale)),
-              onPressed: () {},
+              onPressed: () {
+                html.window.open('mailto:ajinkya446@gmail.com?subject=Hire%20Request&body=Hello%20Ajinkya,', '_self');
+              },
               child: Text(
                 'Hire Me',
                 style: GoogleFonts.montserrat(fontSize: 16 * scale, color: Colors.black, fontWeight: FontWeight.w400),
@@ -230,13 +234,7 @@ class DesktopView extends StatelessWidget {
   Widget _buildRight(double avatarRadius) {
     return Align(
       alignment: Alignment.center,
-      child: CircleAvatar(
-        radius: avatarRadius,
-        backgroundColor: Colors.grey.shade900,
-        child: ClipOval(
-          child: Image.asset('assets/profile.png', fit: BoxFit.contain, width: avatarRadius * 2, height: avatarRadius * 2),
-        ),
-      ),
+      child: Image.asset('assets/profile.png', fit: BoxFit.contain, width: avatarRadius * 2, height: avatarRadius * 2),
     );
   }
 }

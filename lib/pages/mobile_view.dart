@@ -158,7 +158,9 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
                         children: [
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange, padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12)),
-                            onPressed: () {},
+                            onPressed: () {
+                              html.window.open('mailto:ajinkya446@gmail.com?subject=Hire%20Request&body=Hello%20Ajinkya,', '_self');
+                            },
                             child: Text('Hire Me', style: GoogleFonts.montserrat(fontSize: 16 * scale, color: Colors.white)),
                           ),
                           const SizedBox(width: 16),
