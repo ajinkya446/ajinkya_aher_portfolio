@@ -65,7 +65,7 @@ class ServicesSection extends StatelessWidget {
                       return Column(
                         children: List.generate(
                           serviceList.length,
-                              (index) => Padding(
+                          (index) => Padding(
                             padding: const EdgeInsets.only(bottom: 20),
                             child: ServiceCard(serviceContent: serviceList[index]),
                           ),
@@ -83,12 +83,10 @@ class ServicesSection extends StatelessWidget {
                         mainAxisSpacing: 20,
                         childAspectRatio: aspectRatio!,
                       ),
-                      itemBuilder: (context, index) =>
-                          ServiceCard(serviceContent: serviceList[index]),
+                      itemBuilder: (context, index) => ServiceCard(serviceContent: serviceList[index]),
                     );
                   },
                 ),
-
               ),
             ),
           ),
@@ -107,8 +105,7 @@ class ServiceCard extends StatefulWidget {
   State<ServiceCard> createState() => _ServiceCardState();
 }
 
-class _ServiceCardState extends State<ServiceCard>
-    with SingleTickerProviderStateMixin {
+class _ServiceCardState extends State<ServiceCard> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
 
@@ -139,22 +136,14 @@ class _ServiceCardState extends State<ServiceCard>
     final scale = MediaQuery.of(context).textScaleFactor;
 
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.shade900,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.orange, width: 1),
-      ),
+      decoration: BoxDecoration(color: Colors.grey.shade900, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.orange, width: 1)),
       padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisSize: MainAxisSize.min, // Prevent overflow
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           IconButton(
-            icon: FaIcon(
-              faIconMap[widget.serviceContent["icon"]] ??
-                  FontAwesomeIcons.question,
-              size: 32 * scale,
-            ),
+            icon: FaIcon(faIconMap[widget.serviceContent["icon"]] ?? FontAwesomeIcons.question, size: 32 * scale),
             color: Colors.orange,
             onPressed: () {},
           ),

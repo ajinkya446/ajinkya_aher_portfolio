@@ -47,29 +47,18 @@ class DesktopView extends StatelessWidget {
                     style: GoogleFonts.k2d(fontSize: 32, color: const Color(0xffE60026), fontWeight: FontWeight.bold),
                   ),
                   const Spacer(),
-                  NavBarItem(
-                    title: 'Home',
-                    onTap: () => _scrollToSection(homeKey),
-                  ),
-                  NavBarItem(
-                    title: 'Services',
-                    onTap: () => _scrollToSection(servicesKey),
-                  ),
-                  NavBarItem(
-                    title: 'About me',
-                    onTap: () => _scrollToSection(aboutKey),
-                  ),
-                  NavBarItem(
-                    title: 'Contact me',
-                    onTap: () => _scrollToSection(contactKey),
-                  ),
+                  NavBarItem(title: 'Home', onTap: () => _scrollToSection(homeKey)),
+                  NavBarItem(title: 'Services', onTap: () => _scrollToSection(servicesKey)),
+                  NavBarItem(title: 'Services', onTap: () => _scrollToSection(servicesKey)),
+                  NavBarItem(title: 'Projects', onTap: () => _scrollToSection(aboutKey)),
+                  NavBarItem(title: 'Contact me', onTap: () => _scrollToSection(contactKey)),
                   const SizedBox(width: 12),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
                     onPressed: () {},
                     child: Text(
                       'Hire Me',
-                      style: GoogleFonts.montserrat(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w400),
+                      style: GoogleFonts.montserrat(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
                     ),
                   ),
                 ],
@@ -187,8 +176,16 @@ class DesktopView extends StatelessWidget {
                   html.window.open('https://github.com/ajinkya446', '_blank');
                 },
                 child: Icon(FontAwesomeIcons.git, size: 20, color: Colors.white)),
-            Icon(FontAwesomeIcons.gitlab, size: 20, color: Colors.white),
-            Icon(FontAwesomeIcons.medium, size: 20, color: Colors.white),
+            GestureDetector(
+                onTap: () {
+                  html.window.open('https://gitlab.com/ajinkya446', '_blank');
+                },
+                child: const Icon(FontAwesomeIcons.gitlab, size: 20, color: Colors.white)),
+            GestureDetector(
+                onTap: () {
+                  html.window.open('https://medium.com/@ajinkya446', '_blank');
+                },
+                child: Icon(FontAwesomeIcons.medium, size: 20, color: Colors.white)),
           ],
         ),
         SizedBox(height: 30 * scale),
@@ -207,7 +204,11 @@ class DesktopView extends StatelessWidget {
             ),
             OutlinedButton(
               style: OutlinedButton.styleFrom(side: BorderSide(color: Colors.grey.shade400), padding: EdgeInsets.symmetric(horizontal: 24 * scale, vertical: 12 * scale)),
-              onPressed: () {},
+              onPressed: () {
+                html.AnchorElement(href: 'assets/ajinkya_resume.pdf')
+                  ..setAttribute('download', 'Ajinkya_Aher_CV.pdf')
+                  ..click();
+              },
               child: Text(
                 'Download CV',
                 style: GoogleFonts.montserrat(fontSize: 16 * scale, color: Colors.white, fontWeight: FontWeight.w400),
