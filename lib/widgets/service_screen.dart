@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../constants/constants.dart';
 
 class ServicesSection extends StatelessWidget {
   const ServicesSection({super.key});
@@ -25,9 +28,9 @@ class ServicesSection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
-              'Lorem ipsum dolor sit amet consectetur. Imperdiet convallis blandit felis ligula aliquam',
+              'I craft high-quality Android, iOS, and cross-platform apps with Flutter, combining intuitive UI/UX design, seamless web integration, and robust CI/CD automation. Let’s turn your ideas into fast, reliable, and beautifully designed digital experiences.',
               style: GoogleFonts.montserrat(fontSize: 16, color: Colors.grey.shade400),
               textAlign: TextAlign.center,
             ),
@@ -52,20 +55,15 @@ class ServicesSection extends StatelessWidget {
                       aspectRatio = 6 / 3.2;
                     } else {
                       crossAxisCount = 1;
-                      aspectRatio = 1.5;
+                      aspectRatio = 1.8;
                     }
 
                     return GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 6,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: crossAxisCount,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 20,
-                        childAspectRatio: aspectRatio,
-                      ),
-                      itemBuilder: (context, index) => const ServiceCard(),
+                      itemCount: serviceList.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: crossAxisCount, crossAxisSpacing: 20, mainAxisSpacing: 20, childAspectRatio: aspectRatio),
+                      itemBuilder: (context, index) => ServiceCard(serviceContent: serviceList[index]),
                     );
                   },
                 ),
@@ -79,7 +77,9 @@ class ServicesSection extends StatelessWidget {
 }
 
 class ServiceCard extends StatefulWidget {
-  const ServiceCard({super.key});
+  dynamic serviceContent;
+
+  ServiceCard({super.key, this.serviceContent});
 
   @override
   State<ServiceCard> createState() => _ServiceCardState();
@@ -105,51 +105,25 @@ class _ServiceCardState extends State<ServiceCard> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     final scale = MediaQuery.of(context).textScaleFactor;
-
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.shade900,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.orange, width: 1),
-      ),
+      decoration: BoxDecoration(color: Colors.grey.shade900, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.orange, width: 1)),
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.design_services, size: 48, color: Colors.orange),
+          IconButton(icon: FaIcon(faIconMap[widget.serviceContent["icon"]] ?? FontAwesomeIcons.question, size: 32 * scale), color: Colors.orange, onPressed: () {}),
           const SizedBox(height: 12),
-          Text(
-            'Service Title',
-            style: GoogleFonts.montserrat(
-              fontSize: 20 * scale,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
+          Text(widget.serviceContent["title"], style: GoogleFonts.montserrat(fontSize: 18 * scale, fontWeight: FontWeight.bold, color: Colors.white), maxLines: 2, overflow: TextOverflow.ellipsis),
           const SizedBox(height: 8),
           Expanded(
-            child: Text(
-              'This is a short description of the service offered.',
-              style: GoogleFonts.montserrat(
-                fontSize: 14 * scale,
-                color: Colors.grey.shade300,
-              ),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: Text(widget.serviceContent["shortDescription"], style: GoogleFonts.montserrat(fontSize: 14 * scale, color: Colors.grey.shade300), maxLines: 3, overflow: TextOverflow.ellipsis),
           ),
           Align(
             alignment: Alignment.bottomRight,
-            child: SlideTransition(
-              position: _offsetAnimation,
-              child: Icon(Icons.arrow_right_alt, color: Colors.orange, size: 32),
-            ),
+            child: SlideTransition(position: _offsetAnimation, child: Icon(Icons.arrow_right_alt, color: Colors.orange, size: 32)),
           ),
         ],
       ),
     );
   }
 }
-

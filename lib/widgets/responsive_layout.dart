@@ -345,7 +345,7 @@ class MobileView extends StatelessWidget {
                     spacing: 12,
                     runSpacing: 12,
                     alignment: WrapAlignment.center,
-                    children: const [InfoCard(label: '5+', description: 'Experiences'), InfoCard(label: '20+', description: 'Project done'), InfoCard(label: '80+', description: 'Happy Clients')],
+                    children: const [InfoCard(label: '5+', description: 'Experiences'), InfoCard(label: '10+', description: 'Project done'), InfoCard(label: '5+', description: 'Happy Clients')],
                   ),
                   const SizedBox(height: 120),
                   const ServicesSection(),
