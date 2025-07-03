@@ -1,7 +1,11 @@
+import 'dart:html' as html;
+
 import 'package:ajinkya_aher_portfolio/widgets/service_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'about_me_screen.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   final Widget desktop;
@@ -51,7 +55,6 @@ class DesktopView extends StatelessWidget {
                   NavBarItem(title: 'Home'),
                   NavBarItem(title: 'Services'),
                   NavBarItem(title: 'About me'),
-                  NavBarItem(title: 'Portfolio'),
                   NavBarItem(title: 'Contact me'),
                   const SizedBox(width: 12),
                   ElevatedButton(
@@ -113,6 +116,8 @@ class DesktopView extends StatelessWidget {
                     ),
                     const SizedBox(height: 120),
                     const ServicesSection(),
+                    const SizedBox(height: 120),
+                    AboutMeSection()
                   ],
                 ),
               ),
@@ -148,10 +153,18 @@ class DesktopView extends StatelessWidget {
           alignment: isCentered ? WrapAlignment.center : WrapAlignment.start,
           spacing: 20,
           runSpacing: 12,
-          children: const [
+          children: [
             Icon(FontAwesomeIcons.instagram, size: 20, color: Colors.white),
-            Icon(FontAwesomeIcons.linkedin, size: 20, color: Colors.white),
-            Icon(FontAwesomeIcons.git, size: 20, color: Colors.white),
+            GestureDetector(
+                onTap: () {
+                  html.window.open('https://www.linkedin.com/in/ajinkya-aher-34b012348/', '_blank');
+                },
+                child: Icon(FontAwesomeIcons.linkedin, size: 20, color: Colors.white)),
+            GestureDetector(
+                onTap: () {
+                  html.window.open('https://github.com/ajinkya446', '_blank');
+                },
+                child: Icon(FontAwesomeIcons.git, size: 20, color: Colors.white)),
             Icon(FontAwesomeIcons.gitlab, size: 20, color: Colors.white),
             Icon(FontAwesomeIcons.medium, size: 20, color: Colors.white),
           ],
@@ -198,7 +211,7 @@ class DesktopView extends StatelessWidget {
         radius: avatarRadius,
         backgroundColor: Colors.grey.shade900,
         child: ClipOval(
-          child: Image.asset('assets/profile.png', fit: BoxFit.cover, width: avatarRadius * 2, height: avatarRadius * 2),
+          child: Image.asset('assets/profile.png', fit: BoxFit.contain, width: avatarRadius * 2, height: avatarRadius * 2),
         ),
       ),
     );
@@ -284,7 +297,7 @@ class MobileView extends StatelessWidget {
                     radius: 100,
                     backgroundColor: Colors.grey.shade900,
                     child: ClipOval(
-                      child: Image.asset('assets/profile.png', width: 180, height: 180, fit: BoxFit.cover),
+                      child: Image.asset('assets/profile.png', width: 180, height: 180, fit: BoxFit.contain),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -310,11 +323,24 @@ class MobileView extends StatelessWidget {
                     alignment: WrapAlignment.center,
                     spacing: 20,
                     runSpacing: 12,
-                    children: const [
-                      Icon(FontAwesomeIcons.instagram, size: 20, color: Colors.white),
-                      Icon(FontAwesomeIcons.linkedin, size: 20, color: Colors.white),
-                      Icon(FontAwesomeIcons.dribbble, size: 20, color: Colors.white),
-                      Icon(FontAwesomeIcons.behance, size: 20, color: Colors.white),
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            html.window.open('https://www.linkedin.com/in/ajinkya-aher-34b012348/', '_blank');
+                          },
+                          child: Icon(FontAwesomeIcons.instagram, size: 20, color: Colors.white)),
+                      GestureDetector(
+                          onTap: () {
+                            html.window.open('https://www.linkedin.com/in/ajinkya-aher-34b012348/', '_blank');
+                          },
+                          child: Icon(FontAwesomeIcons.linkedin, size: 20, color: Colors.white)),
+                      GestureDetector(
+                          onTap: () {
+                            html.window.open('https://github.com/ajinkya446', '_blank');
+                          },
+                          child: const Icon(FontAwesomeIcons.git, size: 20, color: Colors.white)),
+                      const Icon(FontAwesomeIcons.gitlab, size: 20, color: Colors.white),
+                      const Icon(FontAwesomeIcons.medium, size: 20, color: Colors.white),
                     ],
                   ),
                   const SizedBox(height: 32),
@@ -349,6 +375,8 @@ class MobileView extends StatelessWidget {
                   ),
                   const SizedBox(height: 120),
                   const ServicesSection(),
+                  const SizedBox(height: 120),
+                  AboutMeSection()
                 ],
               ),
             ),
