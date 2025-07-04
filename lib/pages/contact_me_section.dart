@@ -1,7 +1,8 @@
-import 'package:ajinkya_aher_portfolio/pages/desktop_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'desktop_view.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
@@ -11,10 +12,29 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> {
+  // Service selection
   String selectedService = '';
 
-  Widget _inputField(String label, {int maxLines = 1}) {
-    return TextFormField(
+  // Controllers for text fields
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _timelineController = TextEditingController();
+  final TextEditingController _detailsController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _timelineController.dispose();
+    _detailsController.dispose();
+    super.dispose();
+  }
+
+  Widget _inputField(String label, TextEditingController controller, {int maxLines = 1}) {
+    return TextField(
+      controller: controller,
       style: GoogleFonts.montserrat(color: Colors.white),
       maxLines: maxLines,
       decoration: InputDecoration(
@@ -56,92 +76,160 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
+  void _submitForm() {
+    final name = _nameController.text.trim();
+    final email = _emailController.text.trim();
+    final phone = _phoneController.text.trim();
+    final timeline = _timelineController.text.trim();
+    final details = _detailsController.text.trim();
+
+    // Validation
+    if (name.isEmpty) {
+      _showError('Please enter your name');
+      return;
+    }
+
+    if (email.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+      _showError('Please enter a valid email');
+      return;
+    }
+
+    if (phone.isEmpty || !RegExp(r'^[0-9]{7,15}$').hasMatch(phone)) {
+      _showError('Please enter a valid phone number');
+      return;
+    }
+
+    if (selectedService.isEmpty) {
+      _showError('Please select a service of interest');
+      return;
+    }
+
+    if (timeline.isEmpty) {
+      _showError('Please enter your timeline');
+      return;
+    }
+
+    if (details.isEmpty || details.length < 20) {
+      _showError('Project details must be at least 20 characters');
+      return;
+    }
+
+    // All passed
+    _showSuccess('Form submitted successfully!');
+    _clearForm();
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message, style: GoogleFonts.montserrat(color: Colors.white)), backgroundColor: Color(0xffE60026)),
+    );
+  }
+
+  void _showSuccess(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(duration: Duration(seconds: 5), content: Text(message, style: GoogleFonts.montserrat(color: Colors.white)), backgroundColor: Colors.green),
+    );
+  }
+
+  void _clearForm() {
+    _nameController.clear();
+    _emailController.clear();
+    _phoneController.clear();
+    _timelineController.clear();
+    _detailsController.clear();
+    setState(() {
+      selectedService = '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-            child: Column(
-              children: [
-                Text(
-                  'Contact me',
-                  style: GoogleFonts.montserrat(
-                    fontSize: 28,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+              child: Column(
+                children: [
+                  Text(
+                    'Contact me',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 28,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Cultivating Connections: Reach Out And Connect With Me',
-                  style: GoogleFonts.montserrat(
-                    fontSize: 14,
-                    color: Colors.grey.shade500,
+                  const SizedBox(height: 8),
+                  Text(
+                    'Cultivating Connections: Reach Out And Connect With Me',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 14,
+                      color: Colors.grey.shade500,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 40),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    bool isMobile = constraints.maxWidth < 800;
-                    return Wrap(
-                      spacing: 20,
-                      runSpacing: 20,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: isMobile ? double.infinity : 300,
-                          child: _inputField('Name'),
-                        ),
-                        SizedBox(
-                          width: isMobile ? double.infinity : 300,
-                          child: _inputField('Email'),
-                        ),
-                        SizedBox(
-                          width: isMobile ? double.infinity : 300,
-                          child: _inputField('Phone Number'),
-                        ),
-                        SizedBox(
-                          width: isMobile ? double.infinity : 300,
-                          child: _dropdownField(),
-                        ),
-                        SizedBox(
-                          width: isMobile ? double.infinity : 300,
-                          child: _inputField('Timeline'),
-                        ),
-                        SizedBox(
-                          width: isMobile ? double.infinity : 300,
-                          child: _inputField('Project Details...', maxLines: 4),
-                        ),
-                        Container(
-                          alignment: isMobile ? Alignment.center : Alignment.centerRight,
-                          width: isMobile ? double.infinity : 620,
-                          child: OutlinedButton(
-                            onPressed: () {},
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.grey),
-                              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 32),
-                            ),
-                            child: Text(
-                              'Send',
-                              style: GoogleFonts.montserrat(color: Colors.white),
+                  const SizedBox(height: 40),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      bool isMobile = constraints.maxWidth < 800;
+                      return Wrap(
+                        spacing: 20,
+                        runSpacing: 20,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: isMobile ? double.infinity : 300,
+                            child: _inputField('Name', _nameController),
+                          ),
+                          SizedBox(
+                            width: isMobile ? double.infinity : 300,
+                            child: _inputField('Email', _emailController),
+                          ),
+                          SizedBox(
+                            width: isMobile ? double.infinity : 300,
+                            child: _inputField('Phone Number', _phoneController),
+                          ),
+                          SizedBox(
+                            width: isMobile ? double.infinity : 300,
+                            child: _dropdownField(),
+                          ),
+                          SizedBox(
+                            width: isMobile ? double.infinity : 300,
+                            child: _inputField('Timeline', _timelineController),
+                          ),
+                          SizedBox(
+                            width: isMobile ? double.infinity : 300,
+                            child: _inputField('Project Details...', _detailsController, maxLines: 4),
+                          ),
+                          Container(
+                            alignment: isMobile ? Alignment.center : Alignment.centerRight,
+                            width: isMobile ? double.infinity : 620,
+                            child: OutlinedButton(
+                              onPressed: _submitForm,
+                              style: OutlinedButton.styleFrom(
+                                side: const BorderSide(color: Colors.grey),
+                                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 32),
+                              ),
+                              child: Text(
+                                'Send',
+                                style: GoogleFonts.montserrat(color: Colors.white),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ],
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 40),
-          _buildFooter(),
-        ],
+            const SizedBox(height: 40),
+            _buildFooter(),
+          ],
+        ),
       ),
     );
   }
@@ -206,7 +294,10 @@ class _ContactPageState extends State<ContactPage> {
           Wrap(
             spacing: 16,
             alignment: WrapAlignment.center,
-            children: const [Icon(FontAwesomeIcons.instagram, color: Colors.white, size: 20), Icon(FontAwesomeIcons.linkedin, color: Colors.white, size: 20)],
+            children: const [
+              Icon(FontAwesomeIcons.instagram, color: Colors.white, size: 20),
+              Icon(FontAwesomeIcons.linkedin, color: Colors.white, size: 20),
+            ],
           ),
           const SizedBox(height: 24),
           Wrap(
