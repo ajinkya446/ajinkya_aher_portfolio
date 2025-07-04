@@ -40,11 +40,7 @@ class DesktopView extends StatelessWidget {
           children: [
             Text(
               'AA',
-              style: GoogleFonts.k2d(
-                fontSize: 32,
-                color: const Color(0xffE60026),
-                fontWeight: FontWeight.bold,
-              ),
+              style: GoogleFonts.k2d(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold),
             ),
             const Spacer(),
             NavBarItem(title: 'Home', onTap: () => _scrollToSection(homeKey)),

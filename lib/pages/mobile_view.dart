@@ -65,7 +65,7 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
         centerTitle: false,
         title: Text(
           'AA',
-          style: GoogleFonts.k2d(fontSize: 32 * scale, color: const Color(0xffE60026), fontWeight: FontWeight.bold),
+          style: GoogleFonts.k2d(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.black,
         actions: [
