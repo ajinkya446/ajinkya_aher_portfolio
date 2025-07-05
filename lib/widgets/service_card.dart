@@ -6,8 +6,9 @@ import '../constants/constants.dart';
 
 class ServiceCard extends StatefulWidget {
   final dynamic serviceContent;
+  final themeValue;
 
-  const ServiceCard({super.key, required this.serviceContent});
+  const ServiceCard({super.key, required this.serviceContent, this.themeValue});
 
   @override
   State<ServiceCard> createState() => _ServiceCardState();
@@ -20,15 +21,8 @@ class _ServiceCardState extends State<ServiceCard> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _offsetAnimation = Tween<Offset>(
-      begin: Offset.zero,
-      end: const Offset(0.2, 0),
-    ).animate(
+    _controller = AnimationController(duration: const Duration(milliseconds: 1000), vsync: this)..repeat(reverse: true);
+    _offsetAnimation = Tween<Offset>(begin: Offset.zero, end: const Offset(0.2, 0)).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
   }
@@ -44,32 +38,30 @@ class _ServiceCardState extends State<ServiceCard> with SingleTickerProviderStat
     final scale = MediaQuery.of(context).textScaleFactor;
 
     return Container(
-      decoration: BoxDecoration(color: Colors.grey.shade900, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.orange, width: 1)),
+      decoration:
+          BoxDecoration(color: widget.themeValue.brightness == Brightness.light ? Colors.grey.shade50 : Colors.black, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.orange, width: 1)),
       padding: const EdgeInsets.all(16),
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Prevent overflow
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           IconButton(icon: FaIcon(faIconMap[widget.serviceContent["icon"]] ?? FontAwesomeIcons.question, size: 32 * scale), color: Colors.orange, onPressed: () {}),
           const SizedBox(height: 12),
           Text(
             widget.serviceContent["title"],
-            style: GoogleFonts.montserrat(fontSize: 18 * scale, fontWeight: FontWeight.bold, color: Colors.white),
+            style: GoogleFonts.montserrat(fontSize: 18 * scale, fontWeight: FontWeight.bold, color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 8),
           Flexible(
             fit: FlexFit.loose,
-            child: Text(widget.serviceContent["shortDescription"], style: GoogleFonts.montserrat(fontSize: 14 * scale, color: Colors.grey.shade300), maxLines: 3, overflow: TextOverflow.ellipsis),
+            child: Text(widget.serviceContent["shortDescription"], style: GoogleFonts.montserrat(fontSize: 14 * scale, color: widget.themeValue.brightness == Brightness.light ?Colors.black45:Colors.grey.shade300), maxLines: 3, overflow: TextOverflow.ellipsis),
           ),
           const SizedBox(height: 12),
           Align(
             alignment: Alignment.bottomRight,
-            child: SlideTransition(
-              position: _offsetAnimation,
-              child: Icon(Icons.arrow_right_alt, color: Colors.orange, size: 32),
-            ),
+            child: SlideTransition(position: _offsetAnimation, child: Icon(Icons.arrow_right_alt, color: Colors.orange, size: 32)),
           ),
         ],
       ),

@@ -11,15 +11,9 @@ class ProjectCard extends StatefulWidget {
   final String description;
   final String appStoreUrl;
   final String playStoreUrl;
+  final themeValue;
 
-  const ProjectCard({
-    super.key,
-    required this.imagePath,
-    required this.projectName,
-    required this.description,
-    required this.appStoreUrl,
-    required this.playStoreUrl,
-  });
+  const ProjectCard({super.key, required this.imagePath, required this.projectName, required this.description, required this.appStoreUrl, required this.playStoreUrl, this.themeValue});
 
   @override
   State<ProjectCard> createState() => _ProjectCardState();
@@ -42,11 +36,11 @@ class _ProjectCardState extends State<ProjectCard> with SingleTickerProviderStat
         width: 300,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
+          color: widget.themeValue.brightness == Brightness.light ? Colors.black.withOpacity(0.05) : Colors.white.withOpacity(0.05),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.orange.withOpacity(0.7), width: 1.2),
+          border: Border.all(color: Colors.orange.withOpacity(0.7), width: 0.8),
           boxShadow: [
-            BoxShadow(color: Colors.orange.withOpacity(isHovered ? 0.4 : 0.2), blurRadius: isHovered ? 20 : 8, spreadRadius: isHovered ? 2 : 0),
+            BoxShadow(color: Colors.orange.withOpacity(isHovered ? 0.4 : 0.05), blurRadius: isHovered ? 10 : 4, spreadRadius: isHovered ? 2 : 0),
           ],
         ),
         child: ClipRRect(
@@ -61,13 +55,13 @@ class _ProjectCardState extends State<ProjectCard> with SingleTickerProviderStat
                 Text(
                   widget.projectName,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   widget.description,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w300, color: Colors.grey.shade300),
+                  style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w300, color: widget.themeValue.brightness == Brightness.light ? Colors.black45 : Colors.grey.shade300),
                 ),
                 const SizedBox(height: 16),
                 Row(

@@ -5,17 +5,17 @@ import '../constants/constants.dart';
 import '../widgets/service_card.dart';
 
 class ServicesSection extends StatelessWidget {
-  const ServicesSection({super.key});
+  final themeValue;
+
+  const ServicesSection({super.key, this.themeValue});
 
   static const double desktopMaxWidth = 1200;
   static const double horizontalPadding = 16;
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-
     return Container(
-      color: Colors.black,
+      color: themeValue.brightness != Brightness.light ? Colors.black : Colors.white,
       padding: const EdgeInsets.symmetric(vertical: 60),
       width: double.infinity,
       child: Column(
@@ -23,11 +23,7 @@ class ServicesSection extends StatelessWidget {
         children: [
           Text(
             'Services',
-            style: GoogleFonts.montserrat(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+            style: GoogleFonts.montserrat(fontSize: 32, fontWeight: FontWeight.bold, color: (themeValue.brightness == Brightness.light) ? Colors.black : Colors.white),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
@@ -35,10 +31,7 @@ class ServicesSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
               'I craft high-quality Android, iOS, and cross-platform apps with Flutter, combining intuitive UI/UX design, seamless web integration, and robust CI/CD automation. Let’s turn your ideas into fast, reliable, and beautifully designed digital experiences.',
-              style: GoogleFonts.montserrat(
-                fontSize: 16,
-                color: Colors.grey.shade400,
-              ),
+              style: GoogleFonts.montserrat(fontSize: 16, color: themeValue.brightness == Brightness.light ? Colors.black : Colors.grey.shade400),
               textAlign: TextAlign.center,
             ),
           ),
@@ -63,7 +56,7 @@ class ServicesSection extends StatelessWidget {
                       return Column(
                         children: List.generate(
                           serviceList.length,
-                          (index) => Padding(padding: const EdgeInsets.only(bottom: 20), child: ServiceCard(serviceContent: serviceList[index])),
+                          (index) => Padding(padding: const EdgeInsets.only(bottom: 20), child: ServiceCard(serviceContent: serviceList[index], themeValue: themeValue)),
                         ),
                       );
                     }
@@ -73,7 +66,7 @@ class ServicesSection extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: serviceList.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: crossAxisCount, crossAxisSpacing: 20, mainAxisSpacing: 20, childAspectRatio: aspectRatio!),
-                      itemBuilder: (context, index) => ServiceCard(serviceContent: serviceList[index]),
+                      itemBuilder: (context, index) => ServiceCard(serviceContent: serviceList[index], themeValue: themeValue),
                     );
                   },
                 ),
