@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../pages/contact_me_section.dart';
 import '../pages/project_section.dart';
 import '../pages/service_screen.dart';
+import '../utils.dart';
 import '../widgets/info_card.dart';
 import '../widgets/nav_items.dart';
 import 'about_me_screen.dart';
@@ -52,18 +53,9 @@ class DesktopView extends StatelessWidget {
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
               onPressed: () {
-                html.window.open(
-                  'mailto:ajinkya446@gmail.com?subject=Hire%20Request&body=Hello%20Ajinkya,',
-                  '_self',
-                );
+                Utils().launchEmail();
               },
-              child: Text(
-                'Hire Me',
-                style: GoogleFonts.montserrat(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              ),
+              child: Text('Hire Me', style: GoogleFonts.montserrat(fontSize: 16, color: Colors.white)),
             ),
           ],
         ),
@@ -192,7 +184,7 @@ class DesktopView extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 24 * scale, vertical: 12 * scale),
               ),
               onPressed: () {
-                html.window.open('mailto:ajinkya446@gmail.com', '_self');
+                Utils().launchEmail();
               },
               child: Text(
                 'Hire Me',
@@ -208,9 +200,7 @@ class DesktopView extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 24 * scale, vertical: 12 * scale),
               ),
               onPressed: () {
-                html.AnchorElement(href: 'assets/ajinkya_resume.pdf')
-                  ..setAttribute('download', 'Ajinkya_Aher_CV.pdf')
-                  ..click();
+                Utils().downloadPDF();
               },
               child: Text(
                 'Download CV',

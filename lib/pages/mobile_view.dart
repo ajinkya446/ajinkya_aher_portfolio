@@ -2,10 +2,12 @@ import 'dart:html' as html;
 
 import 'package:ajinkya_aher_portfolio/pages/project_section.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../pages/service_screen.dart';
+import '../utils.dart';
 import '../widgets/info_card.dart';
 import 'about_me_screen.dart';
 import 'contact_me_section.dart';
@@ -151,7 +153,7 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange, padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12)),
                             onPressed: () {
-                              html.window.open('mailto:ajinkya446@gmail.com?subject=Hire%20Request&body=Hello%20Ajinkya,', '_self');
+                              Utils().launchEmail();
                             },
                             child: Text('Hire Me', style: GoogleFonts.montserrat(fontSize: 16 * scale, color: Colors.white)),
                           ),
@@ -159,9 +161,7 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(side: BorderSide(color: Colors.grey.shade400), padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12)),
                             onPressed: () {
-                              html.AnchorElement(href: 'assets/ajinkya_resume.pdf')
-                                ..setAttribute('download', 'Ajinkya_Aher_CV.pdf')
-                                ..click();
+                              Utils().downloadPDF();
                             },
                             child: Text('Download CV', style: GoogleFonts.montserrat(fontSize: 16 * scale, color: Colors.white)),
                           ),

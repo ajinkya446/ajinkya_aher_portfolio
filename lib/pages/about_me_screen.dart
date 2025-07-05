@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../utils.dart';
+
 class AboutMeSection extends StatelessWidget {
   const AboutMeSection({super.key});
 
@@ -61,9 +63,7 @@ class AboutMeSection extends StatelessWidget {
         const SizedBox(height: 40),
         ElevatedButton(
           onPressed: () {
-            html.AnchorElement(href: 'assets/ajinkya_resume.pdf')
-              ..setAttribute('download', 'Ajinkya_Aher_CV.pdf')
-              ..click();
+            Utils().downloadPDF();
           },
           style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange,
