@@ -39,10 +39,7 @@ class DesktopView extends StatelessWidget {
         elevation: 0,
         title: Row(
           children: [
-            Text(
-              'AA',
-              style: GoogleFonts.k2d(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold),
-            ),
+            Text('AA', style: GoogleFonts.k2d(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
             const Spacer(),
             NavBarItem(title: 'Home', onTap: () => _scrollToSection(homeKey)),
             NavBarItem(title: 'Services', onTap: () => _scrollToSection(servicesKey)),
@@ -88,11 +85,7 @@ class DesktopView extends StatelessWidget {
                           } else {
                             return Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(child: _buildLeft(scale)),
-                                const SizedBox(width: 40),
-                                Expanded(child: _buildRight(avatarRadius)),
-                              ],
+                              children: [Expanded(child: _buildLeft(scale)), const SizedBox(width: 40), Expanded(child: _buildRight(avatarRadius))],
                             );
                           }
                         },
@@ -105,11 +98,7 @@ class DesktopView extends StatelessWidget {
                     const SizedBox(height: 120),
                     Container(key: aboutKey, child: const AboutMeSection()),
                     const SizedBox(height: 120),
-                    Container(
-                      key: contactKey,
-                      padding: const EdgeInsets.symmetric(vertical: 40),
-                      child: const ContactPage(),
-                    ),
+                    Container(key: contactKey, padding: const EdgeInsets.symmetric(vertical: 40), child: const ContactPage()),
                   ],
                 ),
               ),
@@ -143,11 +132,7 @@ class DesktopView extends StatelessWidget {
         SizedBox(height: 12 * scale),
         Text(
           'Flutter (Android/iOS) App Developer',
-          style: GoogleFonts.montserrat(
-            fontSize: 40 * scale,
-            fontWeight: FontWeight.bold,
-            color: Colors.orange,
-          ),
+          style: GoogleFonts.montserrat(fontSize: 40 * scale, fontWeight: FontWeight.bold, color: Colors.orange),
         ),
         SizedBox(height: 20 * scale),
         Wrap(
@@ -155,22 +140,10 @@ class DesktopView extends StatelessWidget {
           runSpacing: 12,
           children: [
             Icon(FontAwesomeIcons.instagram, size: 20, color: Colors.white),
-            GestureDetector(
-              onTap: () => html.window.open('https://www.linkedin.com/in/ajinkya-aher-34b012348/', '_blank'),
-              child: Icon(FontAwesomeIcons.linkedin, size: 20, color: Colors.white),
-            ),
-            GestureDetector(
-              onTap: () => html.window.open('https://github.com/ajinkya446', '_blank'),
-              child: Icon(FontAwesomeIcons.github, size: 20, color: Colors.white),
-            ),
-            GestureDetector(
-              onTap: () => html.window.open('https://gitlab.com/ajinkya446', '_blank'),
-              child: Icon(FontAwesomeIcons.gitlab, size: 20, color: Colors.white),
-            ),
-            GestureDetector(
-              onTap: () => html.window.open('https://medium.com/@ajinkya446', '_blank'),
-              child: Icon(FontAwesomeIcons.medium, size: 20, color: Colors.white),
-            ),
+            GestureDetector(onTap: () => html.window.open('https://www.linkedin.com/in/ajinkya-aher-34b012348/', '_blank'), child: Icon(FontAwesomeIcons.linkedin, size: 20, color: Colors.white)),
+            GestureDetector(onTap: () => html.window.open('https://github.com/ajinkya446', '_blank'), child: Icon(FontAwesomeIcons.github, size: 20, color: Colors.white)),
+            GestureDetector(onTap: () => html.window.open('https://gitlab.com/ajinkya446', '_blank'), child: Icon(FontAwesomeIcons.gitlab, size: 20, color: Colors.white)),
+            GestureDetector(onTap: () => html.window.open('https://medium.com/@ajinkya446', '_blank'), child: Icon(FontAwesomeIcons.medium, size: 20, color: Colors.white)),
           ],
         ),
         const SizedBox(height: 30),
@@ -179,36 +152,21 @@ class DesktopView extends StatelessWidget {
           runSpacing: 12,
           children: [
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
-                padding: EdgeInsets.symmetric(horizontal: 24 * scale, vertical: 12 * scale),
-              ),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.orange, padding: EdgeInsets.symmetric(horizontal: 24 * scale, vertical: 12 * scale)),
               onPressed: () {
                 Utils().launchEmail();
               },
               child: Text(
                 'Hire Me',
-                style: GoogleFonts.montserrat(
-                  fontSize: 16 * scale,
-                  color: Colors.black,
-                ),
+                style: GoogleFonts.montserrat(fontSize: 16 * scale, color: Colors.black),
               ),
             ),
             OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(color: Colors.grey.shade400),
-                padding: EdgeInsets.symmetric(horizontal: 24 * scale, vertical: 12 * scale),
-              ),
+              style: OutlinedButton.styleFrom(side: BorderSide(color: Colors.grey.shade400), padding: EdgeInsets.symmetric(horizontal: 24 * scale, vertical: 12 * scale)),
               onPressed: () {
                 Utils().downloadPDF();
               },
-              child: Text(
-                'Download CV',
-                style: GoogleFonts.montserrat(
-                  fontSize: 16 * scale,
-                  color: Colors.white,
-                ),
-              ),
+              child: Text('Download CV', style: GoogleFonts.montserrat(fontSize: 16 * scale, color: Colors.white)),
             ),
           ],
         ),

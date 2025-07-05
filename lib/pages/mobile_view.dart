@@ -2,7 +2,6 @@ import 'dart:html' as html;
 
 import 'package:ajinkya_aher_portfolio/pages/project_section.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -65,16 +64,10 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
       backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: false,
-        title: Text(
-          'AA',
-          style: GoogleFonts.k2d(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold),
-        ),
+        title: Text('AA', style: GoogleFonts.k2d(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.black,
         actions: [
-          IconButton(
-            onPressed: toggleDrawer,
-            icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: _drawerController, color: Colors.orange),
-          ),
+          IconButton(onPressed: toggleDrawer, icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: _drawerController, color: Colors.orange)),
         ],
       ),
       body: Stack(
@@ -181,11 +174,8 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
                       const SizedBox(height: 120),
                       Container(key: aboutKey, child: const AboutMeSection()),
                       const SizedBox(height: 120),
-                      Container(
-                        key: contactKey,
-                        padding: const EdgeInsets.symmetric(vertical: 40),
-                        child: const ContactPage(),
-                      ),],
+                      Container(key: contactKey, padding: const EdgeInsets.symmetric(vertical: 40), child: const ContactPage()),
+                    ],
                   ),
                 ),
               ),
