@@ -184,7 +184,7 @@ class _MobileViewState extends State<MobileView> with SingleTickerProviderStateM
                               children: [
                                 InfoCard(label: '5+', description: 'Experience', themeValue: themeValue),
                                 InfoCard(label: '10+', description: 'Project done', themeValue: themeValue),
-                                InfoCard(label: '5+', description: 'Happy Clients', themeValue: themeValue)
+                                InfoCard(label: '10+', description: 'Happy Clients', themeValue: themeValue)
                               ],
                             ),
                             const SizedBox(height: 120),
