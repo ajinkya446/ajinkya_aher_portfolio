@@ -56,7 +56,7 @@ class DesktopView extends StatelessWidget {
                     onPressed: () {
                       Utils().launchEmail();
                     },
-                    child: Text('Hire Me', style: GoogleFonts.montserrat(fontSize: 16, color: themeValue == ThemeMode.light ? Colors.black : Colors.white)),
+                    child: Text('Hire Me', style: GoogleFonts.montserrat(fontSize: 16, color: themeValue.brightness == Brightness.light ? Colors.black : Colors.white)),
                   ),
                 ],
               ),
