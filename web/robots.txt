@@ -1,4 +1,7 @@
+# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
+Disallow: /build/
+Disallow: /public/
 
 Sitemap: https://ajinkya-portfolio-68be0.web.app/sitemap.xml
