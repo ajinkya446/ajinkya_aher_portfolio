@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 class NavBarItem extends StatelessWidget {
   final String title;
   final VoidCallback? onTap;
-  final themeValue;
+  final ThemeData themeValue;
 
-  const NavBarItem({super.key, required this.title, this.onTap, this.themeValue});
+  const NavBarItem({super.key, required this.title, this.onTap, required this.themeValue});
 
   @override
   Widget build(BuildContext context) {

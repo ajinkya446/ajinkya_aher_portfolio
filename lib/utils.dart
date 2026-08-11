@@ -1,5 +1,5 @@
-import 'dart:html' as html;
-
+import 'package:web/web.dart' as web;
+import 'dart:js_interop';
 import 'package:flutter/services.dart';
 
 class Utils {
@@ -7,12 +7,13 @@ class Utils {
     final ByteData bytes = await rootBundle.load('assets/ajinkya_resume.pdf');
     final Uint8List list = bytes.buffer.asUint8List();
 
-    final blob = html.Blob([list]);
-    final url = html.Url.createObjectUrlFromBlob(blob);
-    html.AnchorElement(href: url)
-      ..setAttribute('download', 'Ajinkya_Aher_CV.pdf')
-      ..click();
-    html.Url.revokeObjectUrl(url);
+    final blob = web.Blob([list.toJS].toJS);
+    final url = web.URL.createObjectURL(blob);
+    final anchor = web.document.createElement('a') as web.HTMLAnchorElement;
+    anchor.href = url;
+    anchor.download = 'Ajinkya_Aher_resume_2026.pdf';
+    anchor.click();
+    web.URL.revokeObjectURL(url);
   }
 
   void launchEmail() {
@@ -22,8 +23,9 @@ class Utils {
 
     final String mailtoLink = 'mailto:$email?subject=$subject&body=$body';
 
-    final html.AnchorElement anchor = html.AnchorElement(href: mailtoLink)
-      ..target = '_self'
-      ..click();
+    final web.HTMLAnchorElement anchor = web.document.createElement('a') as web.HTMLAnchorElement;
+    anchor.href = mailtoLink;
+    anchor.target = '_self';
+    anchor.click();
   }
 }

@@ -1,15 +1,13 @@
-import 'dart:html' as html;
+import 'package:web/web.dart' as web;
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'desktop_view.dart';
-
 class ContactPage extends StatefulWidget {
-  final themeValue;
+  final ThemeData themeValue;
 
-  const ContactPage({super.key, this.themeValue});
+  const ContactPage({super.key, required this.themeValue});
 
   @override
   State<ContactPage> createState() => _ContactPageState();
@@ -33,37 +31,60 @@ class _ContactPageState extends State<ContactPage> {
     super.dispose();
   }
 
-  Widget _inputField(String label, TextEditingController controller, final themeValue, {int maxLines = 1}) {
+  Widget _inputField(String label, TextEditingController controller, ThemeData themeValue, {int maxLines = 1}) {
+    final isDark = themeValue.brightness == Brightness.dark;
     return TextField(
       controller: controller,
-      style: GoogleFonts.montserrat(color: Colors.white),
+      style: GoogleFonts.montserrat(color: isDark ? Colors.white : Colors.black, fontSize: 14),
       maxLines: maxLines,
       decoration: InputDecoration(
         hintText: label,
-        hintStyle: GoogleFonts.montserrat(color: widget.themeValue.brightness == Brightness.light ? Colors.black45 : Colors.grey.shade400),
+        hintStyle: GoogleFonts.montserrat(color: isDark ? Colors.grey.shade600 : Colors.black38, fontSize: 13),
         filled: true,
-        fillColor: widget.themeValue.brightness == Brightness.light ? Colors.black12 : const Color(0xFF1E1E1E),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide.none),
+        fillColor: isDark ? const Color(0xFF0F0F0F) : Colors.grey.shade100,
+        contentPadding: const EdgeInsets.all(24),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: BorderSide(color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: BorderSide(color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: const BorderSide(color: Colors.orange, width: 1),
+        ),
       ),
     );
   }
 
   Widget _dropdownField() {
+    final isDark = widget.themeValue.brightness == Brightness.dark;
     return DropdownButtonFormField<String>(
-      value: selectedService.isEmpty ? null : selectedService,
+      initialValue: selectedService.isEmpty ? null : selectedService,
       onChanged: (value) {
         setState(() {
           selectedService = value!;
         });
       },
-      dropdownColor: const Color(0xFF1E1E1E),
-      style: GoogleFonts.montserrat(color: Colors.white),
+      dropdownColor: isDark ? const Color(0xFF0F0F0F) : Colors.white,
+      style: GoogleFonts.montserrat(color: isDark ? Colors.white : Colors.black, fontSize: 14),
       decoration: InputDecoration(
           filled: true,
-          fillColor: widget.themeValue.brightness == Brightness.light ? Colors.black12 : const Color(0xFF1E1E1E),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide.none)),
-      hint: Text('Service Of Interest', style: GoogleFonts.montserrat(color: widget.themeValue.brightness == Brightness.light ? Colors.black45 : Colors.grey.shade400)),
-      items: ['UI/UX Design', 'App Development', 'Web Development'].map((e) => DropdownMenuItem(value: e, child: Text(e, style: GoogleFonts.montserrat(color: Colors.white)))).toList(),
+          fillColor: isDark ? const Color(0xFF0F0F0F) : Colors.grey.shade100,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(4),
+            borderSide: BorderSide(color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(4),
+            borderSide: BorderSide(color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05)),
+          ),
+      ),
+      hint: Text('SERVICE OF INTEREST', style: GoogleFonts.montserrat(color: isDark ? Colors.grey.shade600 : Colors.black38, fontSize: 11, fontWeight: FontWeight.bold, letterSpacing: 1)),
+      items: ['UI/UX DESIGN', 'APP DEVELOPMENT', 'WEB DEVELOPMENT'].map((e) => DropdownMenuItem(value: e, child: Text(e, style: GoogleFonts.montserrat(fontSize: 13)))).toList(),
     );
   }
 
@@ -74,51 +95,44 @@ class _ContactPageState extends State<ContactPage> {
     final timeline = _timelineController.text.trim();
     final details = _detailsController.text.trim();
 
-    // Validation
     if (name.isEmpty) {
       _showError('Please enter your name');
       return;
     }
-
     if (email.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
       _showError('Please enter a valid email');
       return;
     }
-
     if (phone.isEmpty || !RegExp(r'^[0-9]{7,15}$').hasMatch(phone)) {
       _showError('Please enter a valid phone number');
       return;
     }
-
     if (selectedService.isEmpty) {
       _showError('Please select a service of interest');
       return;
     }
-
     if (timeline.isEmpty) {
       _showError('Please enter your timeline');
       return;
     }
-
     if (details.isEmpty || details.length < 20) {
       _showError('Project details must be at least 20 characters');
       return;
     }
 
-    // All passed
     _showSuccess('Form submitted successfully!');
     _clearForm();
   }
 
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message, style: GoogleFonts.montserrat(color: Colors.white)), backgroundColor: Color(0xffE60026)),
+      SnackBar(content: Text(message, style: GoogleFonts.montserrat(color: Colors.white, fontSize: 13)), backgroundColor: const Color(0xffE60026)),
     );
   }
 
   void _showSuccess(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(duration: Duration(seconds: 5), content: Text(message, style: GoogleFonts.montserrat(color: Colors.white)), backgroundColor: Colors.green),
+      SnackBar(duration: const Duration(seconds: 5), content: Text(message, style: GoogleFonts.montserrat(color: Colors.white, fontSize: 13)), backgroundColor: Colors.green),
     );
   }
 
@@ -135,42 +149,57 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = widget.themeValue.brightness == Brightness.dark;
     return Container(
-      color: widget.themeValue.brightness == Brightness.light ? Colors.white : Colors.black,
+      color: isDark ? const Color(0xFF080808) : Colors.white,
       child: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 120, horizontal: 40),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Contact me',
-                      style: GoogleFonts.montserrat(fontSize: 28, color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center),
-                  const SizedBox(height: 8),
-                  Text('Cultivating Connections: Reach Out And Connect With Me', style: GoogleFonts.montserrat(fontSize: 14, color: Colors.grey.shade500), textAlign: TextAlign.center),
-                  const SizedBox(height: 40),
+                  Row(
+                    children: [
+                      Container(width: 32, height: 1, color: Colors.orange),
+                      const SizedBox(width: 16),
+                      Text('CONTACT', style: GoogleFonts.montserrat(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.orange, letterSpacing: 3)),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  Text('Let\'s work together.', style: GoogleFonts.montserrat(fontSize: 40, fontWeight: FontWeight.w900, color: isDark ? Colors.white : Colors.black, letterSpacing: -1)),
+                  const SizedBox(height: 80),
                   LayoutBuilder(
                     builder: (context, constraints) {
-                      bool isMobile = constraints.maxWidth < 800;
-                      return Wrap(
-                        spacing: 20,
-                        runSpacing: 20,
-                        alignment: WrapAlignment.center,
+                      bool isMobile = constraints.maxWidth < 900;
+                      return Column(
                         children: [
-                          SizedBox(width: isMobile ? double.infinity : 300, child: _inputField('Name', _nameController, widget.themeValue)),
-                          SizedBox(width: isMobile ? double.infinity : 300, child: _inputField('Email', _emailController, widget.themeValue)),
-                          SizedBox(width: isMobile ? double.infinity : 300, child: _inputField('Phone Number', _phoneController, widget.themeValue)),
-                          SizedBox(width: isMobile ? double.infinity : 300, child: _dropdownField()),
-                          SizedBox(width: isMobile ? double.infinity : 300, child: _inputField('Timeline', _timelineController, widget.themeValue)),
-                          SizedBox(width: isMobile ? double.infinity : 300, child: _inputField('Project Details...', _detailsController, widget.themeValue, maxLines: 4)),
+                          Wrap(
+                            spacing: 24,
+                            runSpacing: 24,
+                            children: [
+                              SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('NAME', _nameController, widget.themeValue)),
+                              SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('EMAIL', _emailController, widget.themeValue)),
+                              SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('PHONE', _phoneController, widget.themeValue)),
+                              SizedBox(width: isMobile ? double.infinity : 400, child: _dropdownField()),
+                              SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('TIMELINE', _timelineController, widget.themeValue)),
+                              SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('PROJECT DETAILS', _detailsController, widget.themeValue, maxLines: 4)),
+                            ],
+                          ),
+                          const SizedBox(height: 48),
                           Container(
-                            alignment: isMobile ? Alignment.center : Alignment.centerRight,
-                            width: isMobile ? double.infinity : 620,
-                            child: OutlinedButton(
+                            alignment: isMobile ? Alignment.centerLeft : Alignment.centerLeft,
+                            child: ElevatedButton(
                               onPressed: _submitForm,
-                              style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.grey), padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 32)),
-                              child: Text('Send', style: GoogleFonts.montserrat(color: widget.themeValue.brightness == Brightness.light ? Colors.black45 : Colors.white)),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 48),
+                                shape: const StadiumBorder(),
+                                elevation: 0,
+                              ),
+                              child: Text('SEND MESSAGE', style: GoogleFonts.montserrat(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
                             ),
                           ),
                         ],
@@ -180,7 +209,6 @@ class _ContactPageState extends State<ContactPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 40),
             _buildFooter(widget.themeValue),
           ],
         ),
@@ -188,121 +216,51 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Widget _buildFooter(final themeValue) {
+  Widget _buildFooter(ThemeData themeValue) {
+    final isDark = themeValue.brightness == Brightness.dark;
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-      decoration: const BoxDecoration(
-        border: Border(
-          top: BorderSide(color: Color(0xFF1E1E1E), width: 1),
-        ),
+      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 100),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF050505) : Colors.grey.shade50,
+        border: Border(top: BorderSide(color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05))),
       ),
       child: Column(
         children: [
-          Text(
-            'AJINKYA AHER',
-            style: GoogleFonts.montserrat(fontSize: 24, color: Colors.red, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 24),
-          Wrap(
-            spacing: 24,
-            runSpacing: 10,
-            alignment: WrapAlignment.center,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextButton(
-                child: Text('Home', style: GoogleFonts.montserrat(color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white)),
-                onPressed: () {
-                  _scrollToSection(homeKey);
-                },
-              ),
-              TextButton(
-                child: Text('Services', style: GoogleFonts.montserrat(color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white)),
-                onPressed: () {
-                  _scrollToSection(servicesKey);
-                },
-              ),
-              TextButton(
-                child: Text('About me', style: GoogleFonts.montserrat(color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white)),
-                onPressed: () {
-                  _scrollToSection(aboutKey);
-                },
-              ),
-              TextButton(
-                child: Text('Projects', style: GoogleFonts.montserrat(color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white)),
-                onPressed: () {
-                  _scrollToSection(projectKey);
-                },
-              ),
-              TextButton(
-                child: Text('Contact me', style: GoogleFonts.montserrat(color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white)),
-                onPressed: () {
-                  _scrollToSection(contactKey);
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Wrap(
-            spacing: 16,
-            alignment: WrapAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  html.window.open('https://www.instagram.com/forever__undefeated/', '_blank');
-                },
-                child: Icon(FontAwesomeIcons.instagram, size: 20, color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white),
-              ),
-              GestureDetector(
-                onTap: () {
-                  html.window.open('https://www.linkedin.com/in/ajinkya-aher-34b012348/', '_blank');
-                },
-                child: Icon(FontAwesomeIcons.linkedin, size: 20, color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 16,
-            runSpacing: 8,
-            children: [
+              Text('AA.', style: GoogleFonts.montserrat(fontSize: 24, color: Colors.orange, fontWeight: FontWeight.w900, letterSpacing: -1)),
               Row(
-                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.email, color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white, size: 16),
-                  const SizedBox(width: 8),
-                  Text(
-                    'ajinkya446@gmail.com',
-                    style: GoogleFonts.montserrat(color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white, fontSize: 14),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.phone, color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white, size: 16),
-                  const SizedBox(width: 8),
-                  Text(
-                    '+91 0000 0000 00',
-                    style: GoogleFonts.montserrat(color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.white, fontSize: 14),
-                  ),
+                  _footerSocial(FontAwesomeIcons.linkedinIn, 'https://www.linkedin.com/in/ajinkya-aher-34b012348/', isDark),
+                  _footerSocial(FontAwesomeIcons.github, 'https://github.com/ajinkya446', isDark),
+                  _footerSocial(FontAwesomeIcons.instagram, 'https://www.instagram.com/forever__undefeated/', isDark),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: 24),
-          Divider(color: Colors.grey.shade700, thickness: 0.5),
-          const SizedBox(height: 8),
-          Text(
-            'Designed by @Ajinkya.aher Senior Flutter Developer',
-            style: GoogleFonts.montserrat(color: widget.themeValue.brightness == Brightness.light ? Colors.black : Colors.grey.shade600, fontSize: 12),
-            textAlign: TextAlign.center,
+          const SizedBox(height: 60),
+          Divider(color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05)),
+          const SizedBox(height: 40),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('© 2026 Ajinkya Aher', style: GoogleFonts.montserrat(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w500)),
+              Text('Crafted with Flutter', style: GoogleFonts.montserrat(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w500)),
+            ],
           ),
         ],
       ),
     );
   }
 
-  void _scrollToSection(GlobalKey key) {
-    Scrollable.ensureVisible(key.currentContext!, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+  Widget _footerSocial(FaIconData icon, String url, bool isDark) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 32),
+      child: GestureDetector(
+        onTap: () => web.window.open(url, '_blank'),
+        child: FaIcon(icon, size: 18, color: isDark ? Colors.white38 : Colors.black38),
+      ),
+    );
   }
 }
