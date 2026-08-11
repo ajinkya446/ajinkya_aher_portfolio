@@ -62,7 +62,20 @@ FontAwesome Icons
     flutter build web
     Generated files will be in build/web.
 
-## 🔥 Deploy to Firebase Hosting
+## 🔥 Deployment
+
+### Netlify (Recommended)
+This project is configured for automated deployment on Netlify using the `netlify-plugin-flutter`.
+
+1. Push your code to a GitHub/GitLab repository.
+2. Login to [Netlify](https://www.netlify.com/).
+3. Click **Add New Site** > **Import from Git**.
+4. Select your repository.
+5. Netlify will automatically detect the `netlify.toml` and start the build.
+   - **Build Command:** `flutter build web --release`
+   - **Publish Directory:** `build/web`
+
+### Firebase Hosting
     Pre-requisite: Install Firebase CLI
     
     bash
