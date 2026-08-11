@@ -9,16 +9,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
-  google_fonts: any
-  font_awesome_flutter: any
-  firebase_core: any
-  cloud_firestore: any
+  cupertino_icons: ^1.0.9
+  google_fonts: ^8.2.1
+  font_awesome_flutter: ^11.0.0
+  firebase_core: ^4.13.0
+  cloud_firestore: ^6.8.0
+  web: ^1.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true

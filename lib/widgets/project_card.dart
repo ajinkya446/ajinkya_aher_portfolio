@@ -1,4 +1,4 @@
-import 'dart:html' as html;
+import 'package:web/web.dart' as web;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ class ProjectCard extends StatefulWidget {
   final String description;
   final String appStoreUrl;
   final String playStoreUrl;
+  final dynamic themeValue;
 
   const ProjectCard({
     super.key,
@@ -19,74 +20,141 @@ class ProjectCard extends StatefulWidget {
     required this.description,
     required this.appStoreUrl,
     required this.playStoreUrl,
+    this.themeValue,
   });
 
   @override
   State<ProjectCard> createState() => _ProjectCardState();
 }
 
-class _ProjectCardState extends State<ProjectCard> with SingleTickerProviderStateMixin {
+class _ProjectCardState extends State<ProjectCard> {
   bool isHovered = false;
-
-  void _launchUrl(String url) {
-    html.window.open(url, '_blank');
-  }
 
   @override
   Widget build(BuildContext context) {
+    final isDark = widget.themeValue.brightness == Brightness.dark;
+
     return MouseRegion(
       onEnter: (_) => setState(() => isHovered = true),
       onExit: (_) => setState(() => isHovered = false),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        width: 300,
-        padding: const EdgeInsets.all(16),
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOutCubic,
+        width: 320,
+        height: 420,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.orange.withOpacity(0.7), width: 1.2),
-          boxShadow: [
-            BoxShadow(color: Colors.orange.withOpacity(isHovered ? 0.4 : 0.2), blurRadius: isHovered ? 20 : 8, spreadRadius: isHovered ? 2 : 0),
-          ],
+          color: isDark 
+              ? (isHovered ? Colors.white.withValues(alpha: 0.05) : const Color(0xFF0F0F0F))
+              : (isHovered ? Colors.black.withValues(alpha: 0.02) : Colors.white),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isHovered 
+                ? Colors.orange.withValues(alpha: 0.4) 
+                : (isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05)),
+            width: 1,
+          ),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(widget.imagePath, height: 100, fit: BoxFit.contain),
-                const SizedBox(height: 16),
-                Text(
-                  widget.projectName,
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+          borderRadius: BorderRadius.circular(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image Banner
+              Expanded(
+                flex: 5,
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.black : Colors.grey.shade50,
+                  ),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      AnimatedScale(
+                        scale: isHovered ? 1.05 : 1.0,
+                        duration: const Duration(milliseconds: 600),
+                        child: Image.asset(
+                          widget.imagePath,
+                          fit: BoxFit.contain,
+                          alignment: Alignment.center,
+                        ),
+                      ),
+                      if (isHovered)
+                        BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                          child: Container(
+                            color: Colors.orange.withValues(alpha: 0.03),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  widget.description,
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w300, color: Colors.grey.shade300),
+              ),
+              
+              // Content Section
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.projectName.toUpperCase(),
+                        style: GoogleFonts.montserrat(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1.5,
+                          color: Colors.orange,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        widget.description,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 12,
+                          height: 1.6,
+                          color: isDark ? Colors.grey.shade400 : Colors.black87,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const Spacer(),
+                      Row(
+                        children: [
+                          if (widget.playStoreUrl.isNotEmpty)
+                            _storeIconButton(FontAwesomeIcons.googlePlay, widget.playStoreUrl, isDark),
+                          if (widget.appStoreUrl.isNotEmpty)
+                            _storeIconButton(FontAwesomeIcons.apple, widget.appStoreUrl, isDark),
+                          const Spacer(),
+                          Icon(
+                            Icons.arrow_forward,
+                            size: 16,
+                            color: isHovered ? Colors.orange : Colors.grey.shade600,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () => _launchUrl(widget.appStoreUrl),
-                      child: AnimatedScale(scale: isHovered ? 1.2 : 1.0, duration: const Duration(milliseconds: 300), child: const FaIcon(FontAwesomeIcons.appStoreIos, color: Colors.white, size: 24)),
-                    ),
-                    const SizedBox(width: 40),
-                    GestureDetector(
-                      onTap: () => _launchUrl(widget.playStoreUrl),
-                      child: AnimatedScale(scale: isHovered ? 1.2 : 1.0, duration: const Duration(milliseconds: 300), child: const FaIcon(FontAwesomeIcons.googlePlay, color: Colors.white, size: 24)),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _storeIconButton(FaIconData icon, String url, bool isDark) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 16),
+      child: GestureDetector(
+        onTap: () => web.window.open(url, '_blank'),
+        child: FaIcon(
+          icon,
+          size: 14,
+          color: isDark ? Colors.white38 : Colors.black26,
         ),
       ),
     );

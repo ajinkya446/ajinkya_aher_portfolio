@@ -6,72 +6,71 @@ import '../constants/constants.dart';
 
 class ServiceCard extends StatefulWidget {
   final dynamic serviceContent;
+  final dynamic themeValue;
 
-  const ServiceCard({super.key, required this.serviceContent});
+  const ServiceCard({super.key, required this.serviceContent, this.themeValue});
 
   @override
   State<ServiceCard> createState() => _ServiceCardState();
 }
 
-class _ServiceCardState extends State<ServiceCard> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<Offset> _offsetAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _offsetAnimation = Tween<Offset>(
-      begin: Offset.zero,
-      end: const Offset(0.2, 0),
-    ).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+class _ServiceCardState extends State<ServiceCard> {
+  bool isHovered = false;
 
   @override
   Widget build(BuildContext context) {
-    final scale = MediaQuery.of(context).textScaleFactor;
+    final isDark = widget.themeValue.brightness == Brightness.dark;
 
-    return Container(
-      decoration: BoxDecoration(color: Colors.grey.shade900, borderRadius: BorderRadius.circular(12), border: Border.all(color: Colors.orange, width: 1)),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min, // Prevent overflow
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          IconButton(icon: FaIcon(faIconMap[widget.serviceContent["icon"]] ?? FontAwesomeIcons.question, size: 32 * scale), color: Colors.orange, onPressed: () {}),
-          const SizedBox(height: 12),
-          Text(
-            widget.serviceContent["title"],
-            style: GoogleFonts.montserrat(fontSize: 18 * scale, fontWeight: FontWeight.bold, color: Colors.white),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: 300,
+        height: 220,
+        padding: const EdgeInsets.all(32),
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF0D0D0D) : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isHovered 
+                ? Colors.orange.withValues(alpha: 0.5) 
+                : (isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05)),
+            width: 1,
           ),
-          const SizedBox(height: 8),
-          Flexible(
-            fit: FlexFit.loose,
-            child: Text(widget.serviceContent["shortDescription"], style: GoogleFonts.montserrat(fontSize: 14 * scale, color: Colors.grey.shade300), maxLines: 3, overflow: TextOverflow.ellipsis),
-          ),
-          const SizedBox(height: 12),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: SlideTransition(
-              position: _offsetAnimation,
-              child: Icon(Icons.arrow_right_alt, color: Colors.orange, size: 32),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FaIcon(
+              faIconMap[widget.serviceContent["icon"]] ?? FontAwesomeIcons.question,
+              color: isHovered ? Colors.orange : Colors.grey.shade600,
+              size: 24,
             ),
-          ),
-        ],
+            const Spacer(),
+            Text(
+              widget.serviceContent["title"].toUpperCase(),
+              style: GoogleFonts.montserrat(
+                fontSize: 13,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1.2,
+                color: isDark ? Colors.white : Colors.black,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              widget.serviceContent["shortDescription"],
+              style: GoogleFonts.montserrat(
+                fontSize: 11,
+                height: 1.5,
+                color: isDark ? Colors.grey.shade500 : Colors.black54,
+                fontWeight: FontWeight.w500,
+              ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }
