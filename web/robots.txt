@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ajinkya-portfolio-68be0.web.app/sitemap.xml
