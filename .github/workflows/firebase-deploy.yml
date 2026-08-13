@@ -3,8 +3,10 @@ name: Deploy to Firebase Hosting
 on:
   push:
     branches:
-      - master  # Your default branch
-      - main    # Your default branch
+      - development
+      - master
+      - main
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -12,21 +14,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@v1
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
-          sdk: stable
-
-      - name: Install Jaspr CLI
-        run: dart pub global activate jaspr_cli
+          channel: 'stable'
+          flutter-version: '3.27.0'
 
       - name: Install dependencies
-        run: dart pub get
+        run: flutter pub get
 
-      - name: Build Jaspr project
-        run: |
-          export PATH="$PATH":"$HOME/.pub-cache/bin"
-          jaspr build
+      - name: Build Web
+        run: flutter build web --release
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
