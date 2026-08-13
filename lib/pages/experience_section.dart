@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../widgets/fade_in_slide.dart';
 
 class ExperienceSection extends StatelessWidget {
   final dynamic themeValue;
@@ -7,7 +8,8 @@ class ExperienceSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 900;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 900;
     final isDark = themeValue.brightness == Brightness.dark;
 
     final experiences = [
@@ -54,40 +56,60 @@ class ExperienceSection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: isMobile ? 24 : 120, vertical: 120),
+      padding: EdgeInsets.symmetric(
+        horizontal: (screenWidth * 0.08).clamp(24.0, 120.0),
+        vertical: isMobile ? 80 : 120,
+      ),
       color: isDark ? const Color(0xFF080808) : const Color(0xFFF8F9FA),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(width: 32, height: 1, color: Colors.orange),
-              const SizedBox(width: 16),
-              Text(
-                'EXPERIENCE',
-                style: GoogleFonts.montserrat(
-                  fontSize: 40,
-                  letterSpacing: 3,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.orange,
+          FadeInSlide(
+            child: Row(
+              children: [
+                Container(width: 32, height: 1, color: Colors.orange),
+                const SizedBox(width: 16),
+                Text(
+                  'EXPERIENCE',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 11,
+                    letterSpacing: 3,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.orange,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-
+          const SizedBox(height: 32),
+          FadeInSlide(
+            delay: const Duration(milliseconds: 200),
+            child: Text(
+              'Professional Trajectory',
+              style: GoogleFonts.montserrat(
+                fontSize: isMobile ? 28 : 40,
+                fontWeight: FontWeight.w900,
+                color: isDark ? Colors.white : Colors.black,
+                letterSpacing: -1,
+              ),
+            ),
+          ),
           const SizedBox(height: 80),
           Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 900),
+              constraints: const BoxConstraints(maxWidth: 1000),
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: experiences.length,
                 itemBuilder: (context, index) {
-                  return ExperienceItem(
-                    experience: experiences[index] as Map<String, dynamic>,
-                    isLast: index == experiences.length - 1,
-                    themeValue: themeValue,
+                  return FadeInSlide(
+                    delay: Duration(milliseconds: 300 + (index * 100)),
+                    child: ExperienceItem(
+                      experience: experiences[index] as Map<String, dynamic>,
+                      isLast: index == experiences.length - 1,
+                      themeValue: themeValue,
+                    ),
                   );
                 },
               ),
@@ -140,10 +162,10 @@ class ExperienceItem extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 10),
                 decoration: BoxDecoration(
                   color: Colors.orange,
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(1),
                 ),
               ),
-              const SizedBox(width: 40),
+              const SizedBox(width: 32), // Reduced from 40 for mobile efficiency
               
               // Content
               Expanded(
@@ -165,7 +187,7 @@ class ExperienceItem extends StatelessWidget {
                       Text(
                         experience['role'],
                         style: GoogleFonts.montserrat(
-                          fontSize: 20,
+                          fontSize: 18, // Reduced for mobile
                           fontWeight: FontWeight.w900,
                           color: isDark ? Colors.white : Colors.black,
                         ),
@@ -213,7 +235,7 @@ class ExperienceItem extends StatelessWidget {
                         child: Text(
                           point,
                           style: GoogleFonts.montserrat(
-                            fontSize: 14,
+                            fontSize: 13, // Reduced for better fit
                             height: 1.6,
                             color: isDark ? Colors.grey.shade500 : Colors.black87,
                             fontWeight: FontWeight.w500,

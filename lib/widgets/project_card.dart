@@ -33,6 +33,10 @@ class _ProjectCardState extends State<ProjectCard> {
   @override
   Widget build(BuildContext context) {
     final isDark = widget.themeValue.brightness == Brightness.dark;
+    final screenWidth = MediaQuery.of(context).size.width;
+    
+    // Even smaller adaptive width for cards
+    double cardWidth = screenWidth < 340 ? screenWidth - 32 : 240.0;
 
     return MouseRegion(
       onEnter: (_) => setState(() => isHovered = true),
@@ -40,13 +44,13 @@ class _ProjectCardState extends State<ProjectCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeOutCubic,
-        width: 320,
-        height: 420,
+        width: cardWidth,
+        height: 320, // Reduced from 380
         decoration: BoxDecoration(
           color: isDark 
               ? (isHovered ? Colors.white.withValues(alpha: 0.05) : const Color(0xFF0F0F0F))
               : (isHovered ? Colors.black.withValues(alpha: 0.02) : Colors.white),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isHovered 
                 ? Colors.orange.withValues(alpha: 0.4) 
@@ -55,15 +59,16 @@ class _ProjectCardState extends State<ProjectCard> {
           ),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image Banner
+              // Image Banner - Smaller size
               Expanded(
-                flex: 5,
+                flex: 4,
                 child: Container(
                   width: double.infinity,
+                  padding: const EdgeInsets.all(32), 
                   decoration: BoxDecoration(
                     color: isDark ? Colors.black : Colors.grey.shade50,
                   ),
@@ -93,31 +98,33 @@ class _ProjectCardState extends State<ProjectCard> {
               
               // Content Section
               Expanded(
-                flex: 4,
+                flex: 5,
                 child: Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         widget.projectName.toUpperCase(),
                         style: GoogleFonts.montserrat(
-                          fontSize: 13,
+                          fontSize: 10,
                           fontWeight: FontWeight.w900,
-                          letterSpacing: 1.5,
+                          letterSpacing: 1.2,
                           color: Colors.orange,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8),
                       Text(
                         widget.description,
                         style: GoogleFonts.montserrat(
-                          fontSize: 12,
-                          height: 1.6,
+                          fontSize: 9,
+                          height: 1.4,
                           color: isDark ? Colors.grey.shade400 : Colors.black87,
                           fontWeight: FontWeight.w500,
                         ),
-                        maxLines: 3,
+                        maxLines: 4,
                         overflow: TextOverflow.ellipsis,
                       ),
                       const Spacer(),
@@ -130,7 +137,7 @@ class _ProjectCardState extends State<ProjectCard> {
                           const Spacer(),
                           Icon(
                             Icons.arrow_forward,
-                            size: 16,
+                            size: 12,
                             color: isHovered ? Colors.orange : Colors.grey.shade600,
                           ),
                         ],
@@ -148,12 +155,12 @@ class _ProjectCardState extends State<ProjectCard> {
 
   Widget _storeIconButton(FaIconData icon, String url, bool isDark) {
     return Padding(
-      padding: const EdgeInsets.only(right: 16),
+      padding: const EdgeInsets.only(right: 12),
       child: GestureDetector(
         onTap: () => web.window.open(url, '_blank'),
         child: FaIcon(
           icon,
-          size: 14,
+          size: 11,
           color: isDark ? Colors.white38 : Colors.black26,
         ),
       ),
