@@ -13,7 +13,8 @@ class ResponsiveLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth > 800) {
+        // Breakpoint updated to 900 to match the logic in the individual sections
+        if (constraints.maxWidth > 900) {
           return DesktopView();
         } else {
           return const MobileView();

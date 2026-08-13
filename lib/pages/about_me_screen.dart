@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../utils.dart';
+import '../widgets/fade_in_slide.dart';
 
 class AboutMeSection extends StatelessWidget {
   final dynamic themeValue;
@@ -11,69 +12,75 @@ class AboutMeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 900;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 900;
     final isDark = themeValue.brightness == Brightness.dark;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: isMobile ? 24 : 120, vertical: 120),
+      padding: EdgeInsets.symmetric(
+        horizontal: (screenWidth * 0.08).clamp(24.0, 120.0),
+        vertical: isMobile ? 80 : 120,
+      ),
       color: isDark ? const Color(0xFF080808) : Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(width: 32, height: 1, color: Colors.orange),
-              const SizedBox(width: 16),
-              Text(
-                'WHO I AM',
-                style: GoogleFonts.montserrat(
-                  fontSize: 11,
-                  letterSpacing: 3,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.orange,
+          FadeInSlide(
+            child: Row(
+              children: [
+                Container(width: 32, height: 1, color: Colors.orange),
+                const SizedBox(width: 16),
+                Text(
+                  'WHO I AM',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 11,
+                    letterSpacing: 3,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.orange,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 32),
           isMobile
               ? Column(
                   children: [
-                    _buildDescription(isDark),
+                    FadeInSlide(delay: Duration(milliseconds: 200), child: _buildDescription(isDark, isMobile)),
                     const SizedBox(height: 80),
-                    _buildProfileVisual(isDark),
+                    FadeInSlide(delay: Duration(milliseconds: 400), direction: 0.0, child: _buildProfileVisual(isDark, screenWidth * 0.8)),
                   ],
                 )
               : Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(flex: 3, child: _buildDescription(isDark)),
-                    const SizedBox(width: 100),
-                    Expanded(flex: 2, child: _buildProfileVisual(isDark)),
+                    Expanded(flex: 3, child: FadeInSlide(delay: Duration(milliseconds: 200), child: _buildDescription(isDark, isMobile))),
+                    const SizedBox(width: 80),
+                    Expanded(flex: 2, child: FadeInSlide(delay: Duration(milliseconds: 400), direction: 0.0, child: _buildProfileVisual(isDark, screenWidth * 0.3))),
                   ],
                 ),
-          const SizedBox(height: 120),
-          _buildSkillsGrid(isDark),
+          const SizedBox(height: 100),
+          _buildSkillsGrid(isDark, screenWidth),
         ],
       ),
     );
   }
 
-  Widget _buildDescription(bool isDark) {
+  Widget _buildDescription(bool isDark, bool isMobile) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Engineering Scalable Mobile Ecosystems with Precision.',
           style: GoogleFonts.montserrat(
-            fontSize: 32,
+            fontSize: isMobile ? 28 : 36,
             fontWeight: FontWeight.w900,
             height: 1.1,
             color: isDark ? Colors.white : Colors.black,
             letterSpacing: -1,
           ),
         ),
-        const SizedBox(height: 40),
+        const SizedBox(height: 32),
         Text(
           "I am a Senior Mobile Developer with over 5 years of specialized experience in building high-performance, cross-platform ecosystems. My expertise lies at the intersection of Flutter's flexibility and Native performance (Kotlin/Swift).",
           style: GoogleFonts.montserrat(
@@ -122,23 +129,26 @@ class AboutMeSection extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileVisual(bool isDark) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF121212),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.asset(
-          'assets/profile.png',
-          fit: BoxFit.cover,
+  Widget _buildProfileVisual(bool isDark, double size) {
+    return Center(
+      child: Container(
+        constraints: BoxConstraints(maxWidth: size, maxHeight: size),
+        decoration: BoxDecoration(
+          color: const Color(0xFF121212),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(
+            'assets/profile.png',
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildSkillsGrid(bool isDark) {
+  Widget _buildSkillsGrid(bool isDark, double screenWidth) {
     final skills = [
       {"name": "FLUTTER / DART", "icon": FontAwesomeIcons.mobileScreenButton},
       {"name": "NATIVE KOTLIN", "icon": FontAwesomeIcons.code},
@@ -150,18 +160,30 @@ class AboutMeSection extends StatelessWidget {
       {"name": "TEAM LEADERSHIP", "icon": FontAwesomeIcons.usersGear},
     ];
 
-    return Wrap(
-      spacing: 24,
-      runSpacing: 24,
-      alignment: WrapAlignment.start,
-      children: skills.map((skill) => _buildSkillCard(skill, isDark)).toList(),
+    return Center(
+      child: Wrap(
+        spacing: 20,
+        runSpacing: 20,
+        alignment: WrapAlignment.center,
+        children: List.generate(skills.length, (index) {
+          return FadeInSlide(
+            delay: Duration(milliseconds: 100 + (index * 50)),
+            direction: 0.3,
+            child: _buildSkillCard(skills[index], isDark, screenWidth),
+          );
+        }),
+      ),
     );
   }
 
-  Widget _buildSkillCard(Map<String, dynamic> skill, bool isDark) {
+  Widget _buildSkillCard(Map<String, dynamic> skill, bool isDark, double screenWidth) {
+    double cardWidth = (screenWidth < 600) 
+        ? (screenWidth - 68) / 2
+        : 160.0;
+
     return Container(
-      width: 160,
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+      width: cardWidth,
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 12),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF0F0F0F) : Colors.grey.shade50,
         borderRadius: BorderRadius.circular(8),

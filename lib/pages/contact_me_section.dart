@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../widgets/fade_in_slide.dart';
+
 class ContactPage extends StatefulWidget {
   final ThemeData themeValue;
 
@@ -160,46 +162,57 @@ class _ContactPageState extends State<ContactPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Container(width: 32, height: 1, color: Colors.orange),
-                      const SizedBox(width: 16),
-                      Text('CONTACT', style: GoogleFonts.montserrat(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.orange, letterSpacing: 3)),
-                    ],
+                  FadeInSlide(
+                    child: Row(
+                      children: [
+                        Container(width: 32, height: 1, color: Colors.orange),
+                        const SizedBox(width: 16),
+                        Text('CONTACT', style: GoogleFonts.montserrat(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.orange, letterSpacing: 3)),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 32),
-                  Text('Let\'s work together.', style: GoogleFonts.montserrat(fontSize: 40, fontWeight: FontWeight.w900, color: isDark ? Colors.white : Colors.black, letterSpacing: -1)),
+                  FadeInSlide(
+                    delay: const Duration(milliseconds: 200),
+                    child: Text('Let\'s work together.', style: GoogleFonts.montserrat(fontSize: 40, fontWeight: FontWeight.w900, color: isDark ? Colors.white : Colors.black, letterSpacing: -1)),
+                  ),
                   const SizedBox(height: 80),
                   LayoutBuilder(
                     builder: (context, constraints) {
                       bool isMobile = constraints.maxWidth < 900;
                       return Column(
                         children: [
-                          Wrap(
-                            spacing: 24,
-                            runSpacing: 24,
-                            children: [
-                              SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('NAME', _nameController, widget.themeValue)),
-                              SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('EMAIL', _emailController, widget.themeValue)),
-                              SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('PHONE', _phoneController, widget.themeValue)),
-                              SizedBox(width: isMobile ? double.infinity : 400, child: _dropdownField()),
-                              SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('TIMELINE', _timelineController, widget.themeValue)),
-                              SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('PROJECT DETAILS', _detailsController, widget.themeValue, maxLines: 4)),
-                            ],
+                          FadeInSlide(
+                            delay: const Duration(milliseconds: 400),
+                            child: Wrap(
+                              spacing: 24,
+                              runSpacing: 24,
+                              children: [
+                                SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('NAME', _nameController, widget.themeValue)),
+                                SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('EMAIL', _emailController, widget.themeValue)),
+                                SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('PHONE', _phoneController, widget.themeValue)),
+                                SizedBox(width: isMobile ? double.infinity : 400, child: _dropdownField()),
+                                SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('TIMELINE', _timelineController, widget.themeValue)),
+                                SizedBox(width: isMobile ? double.infinity : 400, child: _inputField('PROJECT DETAILS', _detailsController, widget.themeValue, maxLines: 4)),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 48),
-                          Container(
-                            alignment: isMobile ? Alignment.centerLeft : Alignment.centerLeft,
-                            child: ElevatedButton(
-                              onPressed: _submitForm,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.orange,
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 48),
-                                shape: const StadiumBorder(),
-                                elevation: 0,
+                          FadeInSlide(
+                            delay: const Duration(milliseconds: 600),
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: ElevatedButton(
+                                onPressed: _submitForm,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 48),
+                                  shape: const StadiumBorder(),
+                                  elevation: 0,
+                                ),
+                                child: Text('SEND MESSAGE', style: GoogleFonts.montserrat(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
                               ),
-                              child: Text('SEND MESSAGE', style: GoogleFonts.montserrat(fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
                             ),
                           ),
                         ],
@@ -218,19 +231,29 @@ class _ContactPageState extends State<ContactPage> {
 
   Widget _buildFooter(ThemeData themeValue) {
     final isDark = themeValue.brightness == Brightness.dark;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 100),
+      padding: EdgeInsets.symmetric(
+        vertical: 80, 
+        horizontal: isMobile ? 24 : 100,
+      ),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF050505) : Colors.grey.shade50,
         border: Border(top: BorderSide(color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05))),
       ),
       child: Column(
         children: [
-          Row(
+          Flex(
+            direction: isMobile ? Axis.vertical : Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.center,
             children: [
               Text('AA.', style: GoogleFonts.montserrat(fontSize: 24, color: Colors.orange, fontWeight: FontWeight.w900, letterSpacing: -1)),
+              if (isMobile) const SizedBox(height: 32),
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   _footerSocial(FontAwesomeIcons.linkedinIn, 'https://www.linkedin.com/in/ajinkya-aher-34b012348/', isDark),
                   _footerSocial(FontAwesomeIcons.github, 'https://github.com/ajinkya446', isDark),
@@ -242,10 +265,12 @@ class _ContactPageState extends State<ContactPage> {
           const SizedBox(height: 60),
           Divider(color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05)),
           const SizedBox(height: 40),
-          Row(
+          Flex(
+            direction: isMobile ? Axis.vertical : Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('© 2026 Ajinkya Aher', style: GoogleFonts.montserrat(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w500)),
+              if (isMobile) const SizedBox(height: 16),
               Text('Crafted with Flutter', style: GoogleFonts.montserrat(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.w500)),
             ],
           ),
@@ -256,7 +281,7 @@ class _ContactPageState extends State<ContactPage> {
 
   Widget _footerSocial(FaIconData icon, String url, bool isDark) {
     return Padding(
-      padding: const EdgeInsets.only(left: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: GestureDetector(
         onTap: () => web.window.open(url, '_blank'),
         child: FaIcon(icon, size: 18, color: isDark ? Colors.white38 : Colors.black38),
