@@ -50,7 +50,8 @@ void main() async {
           projectId: 'ajinkya-portfolio-68be0',
           storageBucket: 'ajinkya-portfolio-68be0.firebasestorage.app',
           messagingSenderId: '798199344423',
-          appId: '1:798199344423:web:53a04201cd890f78584d02'));
+          appId: '1:798199344423:web:53a04201cd890f78584d02',
+          measurementId: 'G-J3EH9GKDNF'));
   runApp(const MyApp());
 }
 

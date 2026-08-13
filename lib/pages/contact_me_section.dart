@@ -1,6 +1,6 @@
-import 'package:web/web.dart' as web;
-
 import 'package:flutter/material.dart';
+
+import '../browser_utils.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -283,7 +283,7 @@ class _ContactPageState extends State<ContactPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: GestureDetector(
-        onTap: () => web.window.open(url, '_blank'),
+        onTap: () => openExternalLink(url),
         child: FaIcon(icon, size: 18, color: isDark ? Colors.white38 : Colors.black38),
       ),
     );

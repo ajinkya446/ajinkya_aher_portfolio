@@ -1,7 +1,8 @@
 import 'dart:ui';
-import 'package:web/web.dart' as web;
 
 import 'package:flutter/material.dart';
+
+import '../browser_utils.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -221,7 +222,7 @@ class DesktopView extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(right: 40 * scale),
       child: IconButton(
-        onPressed: () => web.window.open(url, '_blank'),
+        onPressed: () => openExternalLink(url),
         icon: FaIcon(icon, size: 18 * scale),
         color: isDark ? Colors.grey.shade700 : Colors.black38,
         hoverColor: Colors.orange,

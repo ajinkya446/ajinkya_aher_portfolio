@@ -1,7 +1,8 @@
-import 'package:web/web.dart' as web;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+
+import '../browser_utils.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -157,7 +158,7 @@ class _ProjectCardState extends State<ProjectCard> {
     return Padding(
       padding: const EdgeInsets.only(right: 12),
       child: GestureDetector(
-        onTap: () => web.window.open(url, '_blank'),
+        onTap: () => openExternalLink(url),
         child: FaIcon(
           icon,
           size: 11,
